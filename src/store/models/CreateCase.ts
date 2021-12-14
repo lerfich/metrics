@@ -26,8 +26,6 @@ class CreateCaseModel {
   }
 
   updateCaseInfo(name: string, value: string | boolean) {
-    console.log(name);
-    console.log(value);
     this.caseInfo = {
       ...this.caseInfo,
       [name]: value,
@@ -40,8 +38,6 @@ class CreateCaseModel {
       updateCaseInfo: action,
     });
   }
-
-
 }
 
 export default CreateCaseModel;

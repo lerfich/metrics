@@ -1,0 +1,51 @@
+.cases {
+  width: 76%;
+  height: 90%;
+  border-radius: 3%;
+  margin: auto;
+  overflow-y: scroll;
+  background: linear-gradient(#f5f5f7, #f5f5f7);
+  -webkit-border-radius: 3%;
+  -moz-border-radius: 3%;
+  -ms-border-radius: 3%;
+  -o-border-radius: 3%;
+}
+
+.titleContainer {
+  display: flex;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.title {
+  margin: auto;
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  height: 40px;
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  border-bottom: 1px solid #D3DAE6;
+  color: #b3b6bb;
+}
+
+.casesNames {
+  flex: 1 1 50%;
+  font-size: 20px;
+
+}
+
+.casesProgress {
+  flex: 1 1 40%;
+  font-size: 20px;
+}
+
+.casesStatus {
+  flex: 1 1 10%;
+  font-size: 20px;
+}

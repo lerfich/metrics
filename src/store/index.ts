@@ -1,12 +1,14 @@
 import { createContext } from 'react';
 
 import {
+  CasesModel,
     CreateCaseModel
 } from './models';
 
 class GlobalStore {
     models = {
       createCaseModel: new CreateCaseModel(),
+      casesModel: new CasesModel(),
     }
 
     services = {

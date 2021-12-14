@@ -22,9 +22,13 @@ function AddCase() {
     }
   }, [globalStore.models.createCaseModel]);
 
+  const addCase = useCallback((e) => {
+    globalStore.models.casesModel.addCase(e, caseInfo.name);
+  }, [caseInfo, globalStore.models.casesModel]);
+
   return (
     <div className="add-case-section">
-      <form className="case-form">
+      <form className="case-form" onSubmit={addCase}>
         <div className="block-title-container">
           <h1>Параметры сбора информации</h1>
         </div>
@@ -98,7 +102,7 @@ function AddCase() {
             </label>
             <div className='buttons-group'>
               <button className="add-case-btn">Сохранить</button>
-              <button className="add-case-btn">Сохранить и запустить</button>
+              <button className="add-case-btn" type='submit' >Сохранить и запустить</button>
             </div>
           </div>
         </section>
