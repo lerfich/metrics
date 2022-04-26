@@ -1,30 +1,64 @@
-import { observer } from 'mobx-react';
-import React, {useCallback, useContext} from 'react';
+import { DateTime } from "luxon";
+import { observer } from "mobx-react";
+import React, { useCallback, useContext } from "react";
 import {
-  FcViewDetails, FcKey, FcReading, FcOvertime, FcCollaboration,
-} from 'react-icons/fc';
-import { IoLogoTwitter, IoLogoYoutube } from 'react-icons/io';
-import { StoreContext } from '../../store';
-import './AddCase.css';
-import ModalHelp from './ModalHelp';
+  FcViewDetails,
+  FcKey,
+  FcReading,
+  FcOvertime,
+  FcCollaboration,
+} from "react-icons/fc";
+import { IoLogoTwitter, IoLogoYoutube } from "react-icons/io";
+import { Form } from "../../shared/components/ui/Form";
+import { FormKeyboardDateTimePicker } from "../../shared/components/ui/FormKeyboardDateTimePicker";
+import { required } from "../../shared/utils/form";
+import { StoreContext } from "../../store";
+import "./AddCase.css";
+import ModalHelp from "./ModalHelp";
 
+const MINUTES_STEP = 30;
 
-function AddCase() {
+const AddCase: React.FC = () => {
   const globalStore = useContext(StoreContext);
 
   const caseInfo = globalStore.models.createCaseModel.caseInfo;
 
-  const updateCaseInfo = useCallback((event) => {
-    if(event.currentTarget.name === 'twitter' || event.currentTarget.name === 'youtube') {
-      globalStore.models.createCaseModel.updateCaseInfo(event.currentTarget.name, event.currentTarget.checked);
-    } else {
-      globalStore.models.createCaseModel.updateCaseInfo(event.currentTarget.name, event.currentTarget.value);
-    }
-  }, [globalStore.models.createCaseModel]);
+  const updateCaseInfo = useCallback(
+    (event) => {
+      if (
+        event.currentTarget.name === "twitter" ||
+        event.currentTarget.name === "youtube"
+      ) {
+        globalStore.models.createCaseModel.updateCaseInfo(
+          event.currentTarget.name,
+          event.currentTarget.checked
+        );
+      } else {
+        globalStore.models.createCaseModel.updateCaseInfo(
+          event.currentTarget.name,
+          event.currentTarget.value
+        );
+      }
+    },
+    [globalStore.models.createCaseModel]
+  );
 
-  const addCase = useCallback((e) => {
-    globalStore.models.casesModel.addCase(e, caseInfo.name);
-  }, [caseInfo, globalStore.models.casesModel]);
+  const addCase = useCallback(
+    (e) => {
+      globalStore.models.casesModel.addCase(e, caseInfo.name);
+    },
+    [caseInfo, globalStore.models.casesModel]
+  );
+
+  const { minExpirationDate, minStartDate } = React.useMemo(
+    () => ({
+      minStartDate: DateTime.now().set({ minute: 0 }).plus({ hours: 1 }),
+      minExpirationDate: DateTime.now()
+        .set({ minute: 0 })
+        .plus({ hours: 1, minutes: MINUTES_STEP }),
+    }),
+    []
+  );
 
   return (
     <div className="add-case-section">
@@ -39,7 +73,14 @@ function AddCase() {
             <p className="header-text">Название кейса</p>
           </div>
           <label className="case-info__case-content" htmlFor="case-name-input">
-            <input className="case-name-input" type="text" name="name" placeholder="Введите название кейса" onChange={updateCaseInfo} value={caseInfo.name}  />
+            <input
+              className="case-name-input"
+              type="text"
+              name="name"
+              placeholder="Введите название кейса"
+              onChange={updateCaseInfo}
+              value={caseInfo.name}
+            />
           </label>
         </section>
 
@@ -48,8 +89,17 @@ function AddCase() {
             <FcViewDetails className="header-icon" />
             <p className="header-text">Описание кейса</p>
           </div>
-          <label className="case-info__case-content" htmlFor="case-description-input">
-            <textarea className="case-description-input" name="description" placeholder="Введите описание кейса" onChange={updateCaseInfo} value={caseInfo.description} />
+          <label
+            className="case-info__case-content"
+            htmlFor="case-description-input"
+          >
+            <textarea
+              className="case-description-input"
+              name="description"
+              placeholder="Введите описание кейса"
+              onChange={updateCaseInfo}
+              value={caseInfo.description}
+            />
           </label>
         </section>
 
@@ -58,8 +108,17 @@ function AddCase() {
             <FcKey className="header-icon" />
             <p className="header-text">Тэги и ключевые понятия</p>
           </div>
-          <label className="case-info__case-content case-info__case-content_tags" htmlFor="case-tags-input">
-            <input className="case-tags-input" name="tags" placeholder="Введите теги и ключевые понятия через ;" onChange={updateCaseInfo} value={caseInfo.tags} />
+          <label
+            className="case-info__case-content case-info__case-content_tags"
+            htmlFor="case-tags-input"
+          >
+            <input
+              className="case-tags-input"
+              name="tags"
+              placeholder="Введите теги и ключевые понятия через ;"
+              onChange={updateCaseInfo}
+              value={caseInfo.tags}
+            />
             <ModalHelp />
           </label>
         </section>
@@ -69,7 +128,7 @@ function AddCase() {
             <FcOvertime className="header-icon" />
             <p className="header-text">Период сбора</p>
           </div>
-          <div className="row">
+          {/* <div className="row">
             <label className="case-info__case-content" htmlFor="case-time-input">
               <p>Начало сбора</p>
               <input type="time" className="case-time-input" name="startTime" onChange={updateCaseInfo} value={caseInfo.startTime} />
@@ -81,7 +140,28 @@ function AddCase() {
               <input type="date" className="case-date-input" name="endDate" onChange={updateCaseInfo} value={caseInfo.endDate} />
             </label>
 
-          </div>
+          </div> */}
+          <Form
+            // oldCss={formBlockCSS}
+            onSubmit={(data) => console.log(data)}
+            validateOnBlur={false}
+            // initialValues={initialValues}
+          >
+            {({ values, isSubmitting, setFieldValue }) => (
+              <FormKeyboardDateTimePicker
+                dateTimePickerProps={{
+                  allowKeyboardControl: true,
+                  inputVariant: "outlined",
+                  label: "START DATE",
+                  timeLabel: "START TIME",
+                  variant: "inline",
+                  minDate: minStartDate,
+                  minutesStep: MINUTES_STEP,
+                }}
+                fieldProps={{ name: "startDate", validate: required }}
+              />
+            )}
+          </Form>
         </section>
 
         <section className="case-info final-section">
@@ -93,16 +173,28 @@ function AddCase() {
             <label className="input-container" htmlFor="twitter-input">
               <IoLogoTwitter className="network-icon network-icon_twitter" />
               <p>Twitter</p>
-              <input type="checkbox" className="network-input twitter-input" name="twitter" onChange={updateCaseInfo} />
+              <input
+                type="checkbox"
+                className="network-input twitter-input"
+                name="twitter"
+                onChange={updateCaseInfo}
+              />
             </label>
             <label className="input-container" htmlFor="youtube-input">
               <IoLogoYoutube className="network-icon network-icon_youtube" />
               <p>YouTube</p>
-              <input type="checkbox" className="network-input youtube-input"  name="youtube" onChange={updateCaseInfo}/>
+              <input
+                type="checkbox"
+                className="network-input youtube-input"
+                name="youtube"
+                onChange={updateCaseInfo}
+              />
             </label>
-            <div className='buttons-group'>
+            <div className="buttons-group">
               <button className="add-case-btn">Сохранить</button>
-              <button className="add-case-btn" type='submit' >Сохранить и запустить</button>
+              <button className="add-case-btn" type="submit">
+                Сохранить и запустить
+              </button>
             </div>
           </div>
         </section>
@@ -239,10 +331,9 @@ function AddCase() {
         {/* <section className="case-info">
             <button className="add-case-btn">Сохранить</button>
           </section> */}
-
       </form>
     </div>
   );
-}
+};
 
 export default observer(AddCase);
