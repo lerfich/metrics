@@ -7,7 +7,6 @@ export * from "./common";
 export * from "./Box";
 export * from "./Popover";
 export * from "./ErrorFallback";
-export * from "./NavBar";
 export * from "./Icon";
 export * from "./Button";
 export * from "./FormSelect";

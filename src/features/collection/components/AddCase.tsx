@@ -2,10 +2,11 @@ import { Box, Chip, useTheme } from "@material-ui/core";
 import { Autocomplete, css } from "@mui/material";
 import { DateTime } from "luxon";
 import { observer } from "mobx-react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import { FormError } from "../../../shared/components/form";
 import { Icon24LogoVk } from "@vkontakte/icons";
+import CIcon from "@coreui/icons-react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   Button,
   FormCheckbox,
@@ -17,10 +18,12 @@ import {
 } from "../../../shared/components/ui";
 import { Form } from "../../../shared/components/ui/Form";
 import { SOCIAL_NETWORKS } from "../../../shared/constants/social";
-import { SxProp } from "../../../shared/types/styles";
 import { required } from "../../../shared/utils/form";
-import { StoreContext } from "../../../store";
-import "./AddCase.css";
+
+const socialIconCss = (color: string) => css`
+  color: ${color};
+  margin-top: 3px;
+`;
 
 const membersInputCss = (theme: any) => css`
   fieldset {
@@ -49,16 +52,6 @@ const chipCSS = (theme: any) => css`
   border-radius: 4px;
   color: ${theme.palette.primary.light};
 `;
-
-const calendarBoxStyles: SxProp = {
-  paddingTop: 0.75,
-  "& .MuiInputBase-input": {
-    padding: 0,
-  },
-  "& .MuiButtonBase-root": {
-    padding: 0,
-  },
-};
 
 const calendarIconCss = (theme: any) => css`
   font-size: ${theme.typography.fontSize}px;
@@ -260,17 +253,29 @@ const AddCase: React.FC = () => {
             {SOCIAL_NETWORKS.map((network) => (
               <Box
                 display="grid"
-                gridTemplateColumns="1fr 5fr"
+                gridTemplateColumns="2fr 5fr"
                 alignItems="center"
               >
-                <Box justifyContent="start" alignItems="center" mr={1} mt={1.5}>
-                  {/* {network !== (SOCIAL_NETWORKS[3] || SOCIAL_NETWORKS[5]) ? (
-                    <Icon size="small" name={network.icon} />
-                  ) : network === SOCIAL_NETWORKS[3] ? (
-                    // <Icon24LogoVk color="blue" />
-                  ) : (
-                    <i class="cib-odnoklassniki" />
-                  )} */}
+                <Box
+                  display="flex"
+                  justifyContent="start"
+                  // alignItems="center"
+                  // mr={1}
+                  mt={1.5}
+                >
+                  <>
+                    {network !== (SOCIAL_NETWORKS[3] || SOCIAL_NETWORKS[5]) ? (
+                      <Icon
+                        size="small"
+                        name={network.icon}
+                        css={socialIconCss(network.color)}
+                      />
+                    ) : network === SOCIAL_NETWORKS[3] ? (
+                      <Icon24LogoVk css={socialIconCss(network.color)} />
+                    ) : (
+                      <CIcon icon="cilPencil" />
+                    )}
+                  </>
                   <Typography variant="body1">{network.label}</Typography>
                 </Box>
                 <FormCheckbox

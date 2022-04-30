@@ -2,11 +2,15 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "./navBar.css";
 import { BiAddToQueue } from "react-icons/bi";
-import { CgLoadbarDoc } from "react-icons/cg";
-import { VscSettingsGear } from "react-icons/vsc";
-import { GiExitDoor } from "react-icons/gi";
 import Logo from "./img/logo-min.png";
 import NavBarImage from "./img/navBarImg-min.png";
+import { APP_URL } from "../constants";
+import { Icon } from "shared/components/ui";
+import { css } from "@emotion/react";
+
+const addCaseIconCss = (theme: any) => css`
+  color: ${theme.palette.background.lightBlue};
+`;
 
 const NavBar: React.FC = () => {
   return (
@@ -17,27 +21,22 @@ const NavBar: React.FC = () => {
       </div>
       <div className="navigation__links-container">
         <div className="links-container__link-container">
-          <BiAddToQueue className="link-icon" />
-          <Link className="link" to="/add">
+          {/* <BiAddToQueue className="link-icon" /> */}
+          <Icon name="AddCircleOutline" css={addCaseIconCss} />
+          <Link className="link" to={APP_URL.addCase}>
             Добавить кейс
           </Link>
         </div>
         <div className="links-container__link-container">
-          <CgLoadbarDoc className="link-icon" />
-          <Link className="link" to="/cases">
-            Просмотреть кейсы
+          <Icon name="List" css={addCaseIconCss} />
+          <Link className="link" to={APP_URL.savedCases}>
+            Мои задания
           </Link>
         </div>
         <div className="links-container__link-container">
-          <VscSettingsGear className="link-icon" />
-          <Link className="link" to="/cases">
-            Настройки
-          </Link>
-        </div>
-        <div className="links-container__link-container">
-          <GiExitDoor className="link-icon" />
-          <Link className="link" to="/cases">
-            Выйти
+          <Icon name="Insights" css={addCaseIconCss} />
+          <Link className="link" to={APP_URL.actualCase}>
+            Анализ кейса
           </Link>
         </div>
       </div>

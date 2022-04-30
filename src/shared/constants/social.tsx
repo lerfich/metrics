@@ -1,9 +1,24 @@
 export const SOCIAL_NETWORKS = [
-  { label: "YouTube", icon: "YouTubeIcon", shortName: "youtube" },
-  { label: "Telegram", icon: "TelegramIcon", shortName: "telegram" },
-  { label: "Twitter", icon: "TwitterIcon", shortName: "twitter" },
-  { label: "Вконтакте", shortName: "vkontakte" },
-  { label: "Facebook", icon: "FacebookIcon", shortName: "facebook" },
-  { label: "Одноклассники", shortName: "odnoklassniki" },
-  { label: "Instagram", icon: "InstagramIcon", shortName: "instagram" },
+  { label: "YouTube", icon: "YouTube", shortName: "youtube", color: "#ff0000" },
+  {
+    label: "Telegram",
+    icon: "Telegram",
+    shortName: "telegram",
+    color: "#0088cc",
+  },
+  { label: "Twitter", icon: "Twitter", shortName: "twitter", color: "#1da1f2" },
+  { label: "Вконтакте", shortName: "vkontakte", color: "#45668e" },
+  {
+    label: "Facebook",
+    icon: "Facebook",
+    shortName: "facebook",
+    color: "#1877f2",
+  },
+  { label: "Одноклассники", shortName: "odnoklassniki", color: "#ed812b" },
+  {
+    label: "Instagram",
+    icon: "Instagram",
+    shortName: "instagram",
+    color: "#e1306c",
+  },
 ];
