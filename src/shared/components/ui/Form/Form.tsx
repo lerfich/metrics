@@ -25,7 +25,7 @@ export type FormProps = Omit<
   children?: React.FC<DefiniteFormikProps>;
 
   /** @deprecated use formNodeProps */
-  // oldCss?: any; // "css" prop not working for unknown reasons
+  oldCss?: any; // "css" prop not working for unknown reasons
 };
 
 export const Form: React.FC<FormProps> = ({
@@ -37,7 +37,7 @@ export const Form: React.FC<FormProps> = ({
   onSubmit,
   formikRef,
   children,
-  // oldCss,
+  oldCss,
   ...props
 }) => {
   return (
@@ -51,7 +51,7 @@ export const Form: React.FC<FormProps> = ({
         {(formProps) => (
           <StyledForm
             ref={formikRef}
-            // css={oldCss}
+            css={oldCss}
             onSubmit={formProps.handleSubmit}
             {...formNodeProps}
           >
