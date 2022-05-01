@@ -7,7 +7,7 @@ import {
   ThemeOptions,
 } from "@material-ui/core";
 import * as R from "ramda";
-import { customPallete } from "../../theme";
+import { customPallete } from "../theme";
 
 import { CustomThemeContext } from "./CustomThemeContext";
 

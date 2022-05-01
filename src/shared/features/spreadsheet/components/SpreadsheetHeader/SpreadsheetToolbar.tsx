@@ -36,10 +36,12 @@ type SpreadsheetToolbarProps = {
     withPerPage?: boolean;
     downloadHandler?: (rawData: AnalyserNode) => void;
     rawData?: any;
+    showTotalCount?: boolean;
   };
   onClickMainAction: () => void;
   toolbarHeader?: JSX.Element;
   toolbarHeaderWidth?: string;
+  totalCount?: number;
 };
 
 export const SpreadsheetToolbar: React.FC<SpreadsheetToolbarProps> = ({
@@ -49,6 +51,7 @@ export const SpreadsheetToolbar: React.FC<SpreadsheetToolbarProps> = ({
   toolbarOptions,
   toolbarHeader,
   toolbarHeaderWidth,
+  totalCount,
 }) => {
   const { setPageSize, pageSize } = useSpreadsheetContext();
 
@@ -68,6 +71,11 @@ export const SpreadsheetToolbar: React.FC<SpreadsheetToolbarProps> = ({
   return (
     <Box>
       <TableRow>
+        {toolbarOptions?.showTotalCount && (
+          <TableCell css={totalCountCss} align="center">
+            Записей найдено: {totalCount}
+          </TableCell>
+        )}
         {toolbarHeader && (
           <TableCell css={tableToolbarHeaderCss(toolbarHeaderWidth)}>
             {toolbarHeader}
@@ -176,6 +184,14 @@ export const SpreadsheetToolbar: React.FC<SpreadsheetToolbarProps> = ({
     </Box>
   );
 };
+
+const totalCountCss = (theme: any) => css`
+  background-color: ${theme.palette.borderlight};
+  width: 50%;
+  margin-left: 10%;
+  align-items: center;
+  justify-content: center;
+`;
 
 const tableCellCheckboxCss = css`
   border: none;

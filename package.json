@@ -40,6 +40,7 @@
     "material-ui-popup-state": "1.9.0",
     "mobx": "^6.3.8",
     "mobx-react": "^7.2.1",
+    "nanoid": "^3.3.3",
     "qs": "^6.10.3",
     "ramda": "^0.28.0",
     "react": "17.0.2",

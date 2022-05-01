@@ -54,6 +54,7 @@ export type SpreadsheetProps<T extends HeadlinesType> = {
     withIndex?: boolean;
     downloadHandler?: (rawData?: any) => void;
     rawData?: any;
+    showTotalCount?: boolean;
   };
   toolbarHeader?: JSX.Element;
   toolbarHeaderWidth?: string;
@@ -132,6 +133,7 @@ export const Spreadsheet = <T extends HeadlinesType>({
           const isSelected = selected.some(
             (selectedId) => selectedId === row.id
           );
+
           return (
             <SpreadsheetRow
               withCheckbox={!!toolbarOptions?.mainToolbarAction}
@@ -175,6 +177,7 @@ export const Spreadsheet = <T extends HeadlinesType>({
             onClickMainAction={onClickMainAction}
             toolbarHeader={toolbarHeader}
             toolbarHeaderWidth={toolbarHeaderWidth}
+            totalCount={itemsCount}
           />
 
           {toolbarOptions?.withIndex && <Divider css={dividerCss} />}

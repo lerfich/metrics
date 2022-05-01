@@ -19,6 +19,8 @@ import {
 import { Form } from "../../../shared/components/ui/Form";
 import { SOCIAL_NETWORKS } from "../../../shared/constants/social";
 import { required } from "../../../shared/utils/form";
+import { generateAccessCode } from "shared/utils/form/generateCode";
+import { useDatabaseContext } from "providers/useDatabaseContext";
 
 const socialIconCss = (color: string) => css`
   color: ${color};
@@ -57,6 +59,23 @@ const calendarIconCss = (theme: any) => css`
   font-size: ${theme.typography.fontSize}px;
   color: ${theme.palette.info.light};
 `;
+
+type FormData = {
+  id?: string;
+  title?: string;
+  description?: string;
+  startDate?: DateTime | undefined;
+  endDate?: DateTime | undefined;
+  society?: {
+    facebook?: boolean;
+    instagram?: boolean;
+    vkontakte?: boolean;
+    odnoklassniki?: boolean;
+    twitter?: boolean;
+    youtube?: boolean;
+    telegram?: boolean;
+  };
+};
 
 const MINUTES_STEP = 30;
 
@@ -134,9 +153,47 @@ const AddCase: React.FC = () => {
 
   const onSaveCase = React.useCallback(() => {}, []);
 
+  const { database, setDatabase } = useDatabaseContext();
+  React.useEffect(() => console.log(database.length, "db length"), [database]);
+  const onSubmit = React.useCallback(
+    (formData: FormData) => {
+      const newCase = {
+        id: generateAccessCode(),
+        title: formData?.title,
+        status: "pending",
+        progress: 0.3,
+        dateFilter: {
+          startDate: DateTime.now(),
+          endDate: DateTime.now(),
+        },
+        filters:
+          Object.keys(formData?.society ?? {}).map((label) => `${label}`) ?? [],
+        tags: chipsArray,
+        tweets: [
+          {
+            id: generateAccessCode(),
+            text: "good text",
+            author: "me",
+            date: DateTime.now(),
+          },
+        ],
+        tweetsCount: 33,
+        generalStats: {
+          likes: 44,
+          comments: 10,
+          posts: 15,
+          reposts: 99,
+          general_coverage: 1048,
+        },
+      };
+      setDatabase([]);
+    },
+    [chipsArray, setDatabase]
+  );
+
   return (
     <Form
-      onSubmit={(data) => console.log({ ...data, chipsArray })}
+      onSubmit={onSubmit}
       validateOnBlur={false}
       // initialValues={initialValues}
     >

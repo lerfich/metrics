@@ -1,3 +1,3 @@
-export * from './SpreadsheetContext';
-export * from './SpreadsheetProvider';
-export * from './useSpreadsheetContext';
+export * from "./SpreadsheetContext";
+export * from "./SpreadsheetProvider";
+export * from "./useSpreadsheetContext";

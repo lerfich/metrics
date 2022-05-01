@@ -3,11 +3,18 @@ import { css } from "@emotion/react";
 import { Box } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import { APP_URL } from "shared/components/navigation/constants";
-import { Typography } from "shared/components/ui";
+import { Button, Typography } from "shared/components/ui";
 import { buildUrl } from "shared/routes/routerUtils";
 
 const savedCasesCss = (theme: any) => css`
   color: ${theme.palette.success.light};
+`;
+
+const buttonCss = (theme: any) => css`
+  text-transform: none;
+  font-weight: 200;
+  padding: 0;
+  margin: 0;
 `;
 
 export const CaseNotFound: React.FC = () => {
@@ -22,13 +29,15 @@ export const CaseNotFound: React.FC = () => {
       Вероятно, вы не выбрали один из существующих кейсов. Посмотрите на
       актуальные во вкладке &nbsp;
       <Box pt={2}>
-        <Typography
-          css={savedCasesCss}
-          variant="subtitle5"
-          onClick={onDetailsClick}
-        >
-          Мои задания
-        </Typography>
+        <Button onClick={onDetailsClick} size="small" css={buttonCss}>
+          <Typography
+            css={savedCasesCss}
+            variant="subtitle5"
+            onClick={onDetailsClick}
+          >
+            Мои задания
+          </Typography>
+        </Button>
       </Box>
     </Box>
   );
