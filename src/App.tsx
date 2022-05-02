@@ -2,23 +2,18 @@ import React from "react";
 import store, { StoreContext } from "./store";
 import "./app.css";
 import { ErrorBoundary } from "react-error-boundary";
-import {
-  BrowserRouter as Router,
-  // Switch,
-  Route,
-  Redirect,
-} from "react-router-dom";
+import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 import NavBar from "./shared/components/navigation/NavBar/navBar";
-import AddCase from "./features/collection/components/AddCase";
-import Cases from "./features/collection/components/SavedCases";
 import { ErrorFallback } from "./shared/components/ui";
 import { APP_URL } from "shared/components/navigation/constants";
 import { ActualCasePage } from "features/analysis/pages/ActualCasePage";
 import { RouterSwitchSymbol } from "shared/symbols/RouterSwitchSymbol";
-import { InvalidPage } from "shared/components/navigation/InvalidPage";
-import { ActualCaseAnalysis } from "features/analysis/components/ActualCaseAnalysis";
+import { AddCasePage } from "features/collection/pages/AddCasePage";
+import { SavedCasesPage } from "features/collection/pages/SavedCasesPage";
+import { useSnackbar } from "notistack";
 
 export const App: React.FC = () => {
+  const { enqueueSnackbar } = useSnackbar();
   return (
     <StoreContext.Provider value={store}>
       <div className="app">
@@ -33,10 +28,10 @@ export const App: React.FC = () => {
                 routes={
                   <React.Fragment>
                     <Route path={APP_URL.addCase} exact>
-                      <AddCase />
+                      <AddCasePage />
                     </Route>
                     <Route path={APP_URL.savedCases} exact>
-                      <Cases />
+                      <SavedCasesPage />
                     </Route>
                     <Route
                       path={[APP_URL.actualCase, APP_URL.actualCaseAnalysis]}

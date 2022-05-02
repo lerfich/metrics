@@ -1,16 +1,21 @@
 import React from "react";
-import { DATABASE } from "shared/constants";
-import { DatabaseContext } from "./DatabaseContext";
+import { DatabaseContext, DEFAULT_CONTEXT_VALUE } from "./DatabaseContext";
 import { DatabaseContextValue } from "./types";
 
 export type DatabaseContextProps = {
   children: React.ReactNode;
+  defaultDatabaseValue?: DatabaseContextValue["database"];
 };
 
-export const DatabaseProvider = ({ children }: DatabaseContextProps) => {
-  const [database, setDatabase] =
-    React.useState<DatabaseContextValue>(DATABASE);
-  React.useEffect(() => console.log(database, "data"), [database]);
+export const DatabaseProvider = ({
+  children,
+  defaultDatabaseValue = DEFAULT_CONTEXT_VALUE.database,
+}: DatabaseContextProps) => {
+  const [database, setDatabase] = React.useState(defaultDatabaseValue);
+  React.useEffect(
+    () => console.log(database, "in provider database"),
+    [database]
+  );
 
   return (
     <DatabaseContext.Provider

@@ -1620,6 +1620,13 @@
     react-is "^16.8.0 || ^17.0.0"
     react-transition-group "^4.4.0"
 
+"@material-ui/icons@^4.11.3":
+  version "4.11.3"
+  resolved "https://registry.yarnpkg.com/@material-ui/icons/-/icons-4.11.3.tgz#b0693709f9b161ce9ccde276a770d968484ecff1"
+  integrity sha512-IKHlyx6LDh8n19vzwH5RtHIOHl9Tu90aAAxcbWME6kp4dmvODM3UvOHJeMIDzUbd4muuJKHmlNoBN+mDY4XkBA==
+  dependencies:
+    "@babel/runtime" "^7.4.4"
+
 "@material-ui/pickers@^3.3.10":
   version "3.3.10"
   resolved "https://registry.yarnpkg.com/@material-ui/pickers/-/pickers-3.3.10.tgz#f1b0f963348cc191645ef0bdeff7a67c6aa25485"
@@ -3820,7 +3827,7 @@ clone@^2.1.1:
   resolved "https://registry.yarnpkg.com/clone/-/clone-2.1.2.tgz#1b7f4b9f591f1e8f83670401600345a02887435f"
   integrity sha1-G39Ln1kfHo+DZwQBYANFoCiHQ18=
 
-clsx@^1.0.2, clsx@^1.0.4, clsx@^1.1.1:
+clsx@^1.0.2, clsx@^1.0.4, clsx@^1.1.0, clsx@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/clsx/-/clsx-1.1.1.tgz#98b3134f9abbdf23b2663491ace13c5c03a73188"
   integrity sha512-6/bPho624p3S2pMyvP5kKBPXnI3ufHLObBFCfgx+LkeR5lg2XYy2hqZqUf45ypD8COn2bhgGJSUE+l5dhNBieA==
@@ -8366,6 +8373,14 @@ normalize-url@^3.0.0:
   version "3.3.0"
   resolved "https://registry.npmjs.org/normalize-url/-/normalize-url-3.3.0.tgz"
   integrity sha512-U+JJi7duF1o+u2pynbp2zXDW2/PADgC30f0GsHZtRh+HOcXHnw137TrNlyxxRvWW5fjKd3bcLHPxofWuCjaeZg==
+
+notistack@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/notistack/-/notistack-2.0.4.tgz#9e043991d4788bed3d1701d1b2f694233ad38dd8"
+  integrity sha512-kOJmKvTG91ElMzi4aHu82BDe1liQ0zMrBp+TnWJptgowDsTbeTKbZmsRqJNIj145BmlOtZsEE9xjcrN46zVo3w==
+  dependencies:
+    clsx "^1.1.0"
+    hoist-non-react-statics "^3.3.0"
 
 npm-run-path@^2.0.0:
   version "2.0.2"

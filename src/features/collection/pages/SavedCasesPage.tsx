@@ -7,9 +7,7 @@ export const SavedCasesPage = () => {
   return (
     <SpreadsheetProvider>
       <SearchProvider>
-        <DatabaseProvider>
-          <SavedCases />
-        </DatabaseProvider>
+        <SavedCases />
       </SearchProvider>
     </SpreadsheetProvider>
   );

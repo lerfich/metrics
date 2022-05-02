@@ -1,8 +1,9 @@
-import { DATABASE } from "shared/constants/datebase";
+import { useDatabaseContext } from "providers/useDatabaseContext";
 
 export const useCurrentCase = (receivedId: string) => {
+  const { database } = useDatabaseContext();
   return {
-    data: DATABASE.find((item) => item.id === receivedId) || undefined,
+    data: database.find((item) => item.id === receivedId) || undefined,
     loading: false,
   };
 };

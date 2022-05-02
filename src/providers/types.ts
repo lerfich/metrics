@@ -1,6 +1,21 @@
 import { DateTime } from "luxon";
 
-export type DatabaseContextValue = {
+export type TweetsType = {
+  id?: string;
+  text?: string;
+  author?: string;
+  date?: DateTime | null;
+}[];
+
+export type GeneralStatsType = {
+  likes: number;
+  comments: number;
+  posts: number;
+  reposts: number;
+  general_coverage: number;
+};
+
+export type DatabaseType = {
   id?: string;
   title?: string;
   status?: string;
@@ -11,18 +26,12 @@ export type DatabaseContextValue = {
   };
   filters: string[];
   tags: string[];
-  tweets?: {
-    id?: string;
-    text?: string;
-    author?: string;
-    date?: DateTime | null;
-  }[];
+  tweets?: TweetsType;
   tweetsCount?: number;
-  generalStats?: {
-    likes: number;
-    comments: number;
-    posts: number;
-    reposts: number;
-    general_coverage: number;
-  };
-}[];
+  generalStats?: GeneralStatsType;
+};
+
+export type DatabaseContextValue = {
+  database: DatabaseType[];
+  setDatabase: React.Dispatch<React.SetStateAction<DatabaseType[]>>;
+};

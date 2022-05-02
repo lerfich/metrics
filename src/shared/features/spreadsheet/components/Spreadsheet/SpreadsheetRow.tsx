@@ -13,6 +13,10 @@ import {
   useSpreadsheetContext,
 } from "../../";
 
+import { useHistory } from "react-router-dom";
+import { APP_URL } from "shared/components/navigation/constants";
+import { buildUrl } from "shared/routes/routerUtils";
+
 const rowCss = css`
   cursor: pointer;
 
@@ -41,6 +45,7 @@ type SpreadsheetRowProps<T extends HeadlinesType> = {
   withIndex?: boolean;
   index: number;
   howManySelected: number;
+  shouldRedirect?: boolean;
 };
 
 export const SpreadsheetRow = <T extends HeadlinesType>({
@@ -53,13 +58,18 @@ export const SpreadsheetRow = <T extends HeadlinesType>({
   withIndex = true,
   index,
   howManySelected,
+  shouldRedirect,
 }: SpreadsheetRowProps<T>) => {
   const { setCurrentRowId } = useSpreadsheetContext();
+  const history = useHistory();
 
-  const onRowClick = React.useCallback(
-    () => setCurrentRowId(rowData.id),
-    [rowData.id, setCurrentRowId]
-  );
+  const onRowClick = React.useCallback(() => {
+    setCurrentRowId(rowData.id);
+    const url = buildUrl(APP_URL.actualCase, {
+      pathParams: { id: rowData.id },
+    });
+    shouldRedirect && history.push(url);
+  }, [history, rowData.id, setCurrentRowId]);
 
   const actionsPopover = (
     <SpreadsheetActionsPopover

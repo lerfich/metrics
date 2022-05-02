@@ -2,17 +2,17 @@ import React from "react";
 import { observer } from "mobx-react";
 
 import {
+  downloadCsv,
+  formatDataToCsv,
   Spreadsheet,
   useSpreadsheetContext,
 } from "shared/features/spreadsheet";
 import { SavedCasesSpreadsheetHeadlines } from "../constants";
-import { useHistory } from "react-router-dom";
-import { APP_URL } from "shared/components/navigation/constants";
-import { buildUrl } from "shared/routes/routerUtils";
 import { Box, LinearProgress } from "@material-ui/core";
 import { useSavedCases } from "../hooks/useSavedCases";
 import { css } from "@emotion/react";
 import { Typography } from "shared/components/ui";
+import { DatabaseType } from "providers/types";
 
 const titleCss = (theme: any) => css`
   color: ${theme.palette.primary.light};
@@ -30,20 +30,22 @@ const statusCss = (theme: any) => css`
 `;
 
 const SavedCases = () => {
-  const { currentRowId } = useSpreadsheetContext();
-  const history = useHistory();
-  React.useEffect(
-    () => console.log(currentRowId, "id u clicked in saved"),
-    [currentRowId]
-  );
-  const onDetailsClick = React.useCallback(() => {
-    const url = buildUrl(APP_URL.actualCase, {
-      pathParams: { id: 2 },
-    });
-    history.push(url);
-  }, [history]);
-
   const { data: tableData, loading } = useSavedCases();
+
+  const downloadHandler = React.useCallback((toolbarData: DatabaseType[]) => {
+    downloadCsv(
+      formatDataToCsv({
+        type: "object-array",
+        data: toolbarData.map(({ title, progress, status }: any) => ({
+          title: title ?? "Название не найдено",
+          progress: progress ?? "Прогресс не найден",
+          status: status ?? "Статус не найден",
+        })),
+        titles: ["Название", "Прогресс", "Статус"],
+      }),
+      "Сохраненные кейсы"
+    );
+  }, []);
 
   const savedCases = React.useMemo(
     () =>
@@ -83,17 +85,16 @@ const SavedCases = () => {
   );
 
   return (
-    <Box onClick={onDetailsClick} width={"100%"}>
+    <Box width={"100%"}>
       <Spreadsheet
         data={savedCases}
         headlines={SavedCasesSpreadsheetHeadlines}
-        toolbarOptions={
-          {
-            // filters: MembersSpreadsheetFilters,
-            // downloadHandler,
-            // rawData: tableData?.membersFilterByZipRequest?.items ?? [],
-          }
-        }
+        toolbarOptions={{
+          shouldRedirect: true,
+          withDownload: true,
+          downloadHandler,
+          rawData: tableData ?? [],
+        }}
         cellActions={[]}
         itemsCount={1 ?? 0}
         loading={loading}

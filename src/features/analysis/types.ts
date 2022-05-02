@@ -5,7 +5,7 @@ export interface ActualCaseContentInput {
     id?: string;
     text?: string;
     author?: string;
-    date?: DateTime;
+    date?: DateTime | null;
   }[];
   tweetsCount?: number;
   generalStats?: {
@@ -16,8 +16,8 @@ export interface ActualCaseContentInput {
     general_coverage?: number;
   };
   dateFilter?: {
-    startDate?: DateTime;
-    endDate?: DateTime;
+    startDate?: DateTime | null;
+    endDate?: DateTime | null;
   };
   tags?: string[];
   filters?: string[];

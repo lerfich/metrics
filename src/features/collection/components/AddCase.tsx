@@ -6,7 +6,6 @@ import React from "react";
 import { FormError } from "../../../shared/components/form";
 import { Icon24LogoVk } from "@vkontakte/icons";
 import CIcon from "@coreui/icons-react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   Button,
   FormCheckbox,
@@ -21,6 +20,12 @@ import { SOCIAL_NETWORKS } from "../../../shared/constants/social";
 import { required } from "../../../shared/utils/form";
 import { generateAccessCode } from "shared/utils/form/generateCode";
 import { useDatabaseContext } from "providers/useDatabaseContext";
+import { useSnackbar } from "notistack";
+import {
+  createSnackMessage,
+  SNACK_TYPES,
+} from "shared/components/ui/SnackMessage";
+import { random } from "lodash";
 
 const socialIconCss = (color: string) => css`
   color: ${color};
@@ -66,7 +71,7 @@ type FormData = {
   description?: string;
   startDate?: DateTime | undefined;
   endDate?: DateTime | undefined;
-  society?: {
+  social?: {
     facebook?: boolean;
     instagram?: boolean;
     vkontakte?: boolean;
@@ -79,8 +84,10 @@ type FormData = {
 
 const MINUTES_STEP = 30;
 
-const AddCase: React.FC = () => {
+const AddCase = () => {
   const theme: any = useTheme();
+  const { setDatabase, database } = useDatabaseContext();
+  const { enqueueSnackbar } = useSnackbar();
 
   const datePickerStyle: React.CSSProperties = {
     color: theme.palette.primary.main,
@@ -107,14 +114,15 @@ const AddCase: React.FC = () => {
 
   const [chipsArray, setChipsArray] = React.useState<string[]>([]);
   const [error, setError] = React.useState(false);
+  const [inputText, setInputText] = React.useState<string>();
 
-  const onEmailAdd = React.useCallback(
+  const onTagAdd = React.useCallback(
     (event: React.SyntheticEvent, value: string[]) => {
       if (error) {
         setError(false);
       }
-      // if (value.every((chip) => EMAIL_REGEX.test(chip))) {
       setChipsArray(value);
+      setInputText("");
     },
     [error]
   );
@@ -125,11 +133,15 @@ const AddCase: React.FC = () => {
     }
   }, [error]);
 
-  const onChangeInputText = React.useCallback(() => {
-    if (error) {
-      setError(false);
-    }
-  }, [error]);
+  const onChangeInputText = React.useCallback(
+    (event) => {
+      if (error) {
+        setError(false);
+      }
+      setInputText(event.target.value);
+    },
+    [error]
+  );
 
   const handleKeyDown = React.useCallback(
     (event) => {
@@ -140,6 +152,7 @@ const AddCase: React.FC = () => {
           event.stopPropagation();
           if (event.target.value.length > 0) {
             setChipsArray([...chipsArray, event.target.value]);
+            setInputText("");
           } else {
             setError(true);
           }
@@ -153,7 +166,6 @@ const AddCase: React.FC = () => {
 
   const onSaveCase = React.useCallback(() => {}, []);
 
-  const { database, setDatabase } = useDatabaseContext();
   React.useEffect(() => console.log(database.length, "db length"), [database]);
   const onSubmit = React.useCallback(
     (formData: FormData) => {
@@ -161,13 +173,13 @@ const AddCase: React.FC = () => {
         id: generateAccessCode(),
         title: formData?.title,
         status: "pending",
-        progress: 0.3,
+        progress: (random(10) * 10) / 100,
         dateFilter: {
           startDate: DateTime.now(),
           endDate: DateTime.now(),
         },
         filters:
-          Object.keys(formData?.society ?? {}).map((label) => `${label}`) ?? [],
+          Object.keys(formData?.social ?? {}).map((label) => `${label}`) ?? [],
         tags: chipsArray,
         tweets: [
           {
@@ -186,15 +198,19 @@ const AddCase: React.FC = () => {
           general_coverage: 1048,
         },
       };
-      setDatabase([]);
+      setDatabase([...database, newCase]);
+      enqueueSnackbar("Выполнено. Новый кейс был добавлен к общему списку", {
+        autoHideDuration: 3000,
+        content: createSnackMessage(SNACK_TYPES.error),
+      });
     },
-    [chipsArray, setDatabase]
+    [chipsArray, database, enqueueSnackbar, setDatabase]
   );
 
   return (
     <Form
       onSubmit={onSubmit}
-      validateOnBlur={false}
+      // validateOnBlur={false}
       // initialValues={initialValues}
     >
       {({ values, isSubmitting, setFieldValue }) => (
@@ -232,7 +248,7 @@ const AddCase: React.FC = () => {
             defaultValue={[]}
             value={chipsArray}
             freeSolo
-            onChange={onEmailAdd}
+            onChange={onTagAdd}
             onFocus={onFocusInput}
             renderTags={(
               value: string[],
@@ -260,6 +276,7 @@ const AddCase: React.FC = () => {
                     placeholder="Напишите тег"
                     variant="outlined"
                     onChange={onChangeInputText}
+                    value={inputText}
                   />
                   {error && <FormError text={`Invalid text`} />}
                 </React.Fragment>
