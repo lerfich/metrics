@@ -18,3 +18,5 @@ export * from "./DatePicker";
 export * from "./FormKeyboardDatePicker";
 export * from "./FormCheckbox";
 export * from "./Tooltip";
+export * from "./Chart";
+export * from "./Preloader";

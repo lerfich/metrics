@@ -15,6 +15,15 @@ export type GeneralStatsType = {
   general_coverage: number;
 };
 
+export type InfluencerType = {
+  userId: number;
+  user: string;
+  likesCount: number;
+  tweetsCount: number;
+  repostsCount: number;
+  involved: number;
+};
+
 export type DatabaseType = {
   id?: string;
   title?: string;
@@ -31,7 +40,11 @@ export type DatabaseType = {
   generalStats?: GeneralStatsType;
 };
 
+export type DatabaseInfluencersType = InfluencerType[];
+
 export type DatabaseContextValue = {
   database: DatabaseType[];
   setDatabase: React.Dispatch<React.SetStateAction<DatabaseType[]>>;
+  influencers: DatabaseInfluencersType;
+  setInfluencers: React.Dispatch<React.SetStateAction<DatabaseInfluencersType>>;
 };

@@ -5,23 +5,24 @@ import { DatabaseContextValue } from "./types";
 export type DatabaseContextProps = {
   children: React.ReactNode;
   defaultDatabaseValue?: DatabaseContextValue["database"];
+  defaultInfluencersValue?: DatabaseContextValue["influencers"];
 };
 
 export const DatabaseProvider = ({
   children,
   defaultDatabaseValue = DEFAULT_CONTEXT_VALUE.database,
+  defaultInfluencersValue = DEFAULT_CONTEXT_VALUE.influencers,
 }: DatabaseContextProps) => {
   const [database, setDatabase] = React.useState(defaultDatabaseValue);
-  React.useEffect(
-    () => console.log(database, "in provider database"),
-    [database]
-  );
+  const [influencers, setInfluencers] = React.useState(defaultInfluencersValue);
 
   return (
     <DatabaseContext.Provider
       value={{
         database,
         setDatabase,
+        influencers,
+        setInfluencers,
       }}
     >
       {children}

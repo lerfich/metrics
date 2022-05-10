@@ -13,6 +13,7 @@ import {
   FormTextField,
   Icon,
   TextField,
+  Tooltip,
   Typography,
 } from "../../../shared/components/ui";
 import { Form } from "../../../shared/components/ui/Form";
@@ -63,6 +64,10 @@ const chipCSS = (theme: any) => css`
 const calendarIconCss = (theme: any) => css`
   font-size: ${theme.typography.fontSize}px;
   color: ${theme.palette.info.light};
+`;
+
+const helperMarkCss = (theme: any) => css`
+  color: ${theme.palette.primary.light};
 `;
 
 type FormData = {
@@ -242,47 +247,65 @@ const AddCase = () => {
             }}
             fieldProps={{ name: "description", validate: required }}
           />
-          <Autocomplete
-            multiple
-            options={[]}
-            defaultValue={[]}
-            value={chipsArray}
-            freeSolo
-            onChange={onTagAdd}
-            onFocus={onFocusInput}
-            renderTags={(
-              value: string[],
-              getTagProps: (email: { index: number }) => JSX.IntrinsicAttributes
-            ) =>
-              value.map((option: string, index: number) => {
+          <Box
+            display="grid"
+            gridTemplateColumns="auto min-content"
+            alignItems="center"
+          >
+            <Autocomplete
+              multiple
+              options={[]}
+              defaultValue={[]}
+              value={chipsArray}
+              freeSolo
+              onChange={onTagAdd}
+              onFocus={onFocusInput}
+              renderTags={(
+                value: string[],
+                getTagProps: (email: {
+                  index: number;
+                }) => JSX.IntrinsicAttributes
+              ) =>
+                value.map((option: string, index: number) => {
+                  return (
+                    <Chip
+                      key={option}
+                      css={chipCSS}
+                      label={option}
+                      {...getTagProps({ index })}
+                    />
+                  );
+                })
+              }
+              renderInput={(params: any) => {
+                params.inputProps.onKeyDown = handleKeyDown;
                 return (
-                  <Chip
-                    key={option}
-                    css={chipCSS}
-                    label={option}
-                    {...getTagProps({ index })}
-                  />
+                  <React.Fragment>
+                    <TextField
+                      {...params}
+                      css={membersInputCss}
+                      label="ТЭГИ"
+                      placeholder="Напишите тег"
+                      variant="outlined"
+                      onChange={onChangeInputText}
+                      value={inputText}
+                    />
+                    {error && <FormError text={`Invalid text`} />}
+                  </React.Fragment>
                 );
-              })
-            }
-            renderInput={(params: any) => {
-              params.inputProps.onKeyDown = handleKeyDown;
-              return (
-                <React.Fragment>
-                  <TextField
-                    {...params}
-                    css={membersInputCss}
-                    label="ТЭГИ"
-                    placeholder="Напишите тег"
-                    variant="outlined"
-                    onChange={onChangeInputText}
-                    value={inputText}
-                  />
-                  {error && <FormError text={`Invalid text`} />}
-                </React.Fragment>
-              );
-            }}
-          />
+              }}
+            />
+            <Tooltip
+              title={
+                <Typography variant="body2">
+                  Ключевое слово или ключевая фраза не больше двух слов
+                </Typography>
+              }
+              placement="top"
+            >
+              <Icon name="HelpOutline" css={helperMarkCss} />
+            </Tooltip>
+          </Box>
           <Box
             display="flex"
             justifyContent="space-between"

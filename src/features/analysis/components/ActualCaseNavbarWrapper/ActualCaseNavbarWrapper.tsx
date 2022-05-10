@@ -4,12 +4,13 @@ import { Box } from "@material-ui/core";
 import { Route, useParams } from "react-router-dom";
 import { APP_URL } from "shared/components/navigation/constants";
 import { RouterSwitchSymbol } from "shared/symbols/RouterSwitchSymbol";
-import { ActualCaseAnalysis } from "../ActualCaseAnalysis";
+import { ActualCaseBasicAnalytics } from "../ActualCaseBasicAnalytics";
 import { NavbarList } from "./NavbarList";
 import { buildUrl } from "shared/routes/routerUtils";
 import { ActualCaseContentInput } from "features/analysis/types";
 import { ActualCaseSidebar } from "../ActualCaseSidebar";
 import { ActualCaseContent } from "../ActualCaseContent";
+import { ActualCaseAdvancedAnalytics } from "../ActualCaseAdvancedAnalytics";
 
 export const ActualCaseNavbarWrapper: React.FC<ActualCaseContentInput> = ({
   generalStats,
@@ -27,9 +28,16 @@ export const ActualCaseNavbarWrapper: React.FC<ActualCaseContentInput> = ({
       route: buildUrl(APP_URL.actualCase, { pathParams: { id } }),
     },
     {
-      title: "Аналитика",
+      title: "Базовый анализ",
       icon: "BarChart",
-      route: buildUrl(APP_URL.actualCaseAnalysis, { pathParams: { id } }),
+      route: buildUrl(APP_URL.actualCaseBasicAnalytics, { pathParams: { id } }),
+    },
+    {
+      title: "Продвинутый анализ",
+      icon: "Addchart",
+      route: buildUrl(APP_URL.actualCaseAdvancedAnalytics, {
+        pathParams: { id },
+      }),
     },
   ];
 
@@ -53,8 +61,11 @@ export const ActualCaseNavbarWrapper: React.FC<ActualCaseContentInput> = ({
                     generalStats={generalStats}
                   />
                 </Route>
-                <Route path={APP_URL.actualCaseAnalysis} exact>
-                  <ActualCaseAnalysis />
+                <Route path={APP_URL.actualCaseBasicAnalytics} exact>
+                  <ActualCaseBasicAnalytics />
+                </Route>
+                <Route path={APP_URL.actualCaseAdvancedAnalytics} exact>
+                  <ActualCaseAdvancedAnalytics />
                 </Route>
               </React.Fragment>
             }
