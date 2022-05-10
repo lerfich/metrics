@@ -10,10 +10,10 @@ import { ActualCasePage } from "features/analysis/pages/ActualCasePage";
 import { RouterSwitchSymbol } from "shared/symbols/RouterSwitchSymbol";
 import { AddCasePage } from "features/collection/pages/AddCasePage";
 import { SavedCasesPage } from "features/collection/pages/SavedCasesPage";
-import { useSnackbar } from "notistack";
+import { Influencers } from "features/influencers";
+import { InfluencerProfile } from "features/influencers/components/InfluencerProfile";
 
 export const App: React.FC = () => {
-  const { enqueueSnackbar } = useSnackbar();
   return (
     <StoreContext.Provider value={store}>
       <div className="app">
@@ -34,10 +34,20 @@ export const App: React.FC = () => {
                       <SavedCasesPage />
                     </Route>
                     <Route
-                      path={[APP_URL.actualCase, APP_URL.actualCaseAnalysis]}
+                      path={[
+                        APP_URL.actualCase,
+                        APP_URL.actualCaseBasicAnalytics,
+                        APP_URL.actualCaseAdvancedAnalytics,
+                      ]}
                       exact
                     >
                       <ActualCasePage />
+                    </Route>
+                    <Route path={APP_URL.influencers} exact>
+                      <Influencers />
+                    </Route>
+                    <Route path={APP_URL.actualUser} exact>
+                      <InfluencerProfile />
                     </Route>
                   </React.Fragment>
                 }

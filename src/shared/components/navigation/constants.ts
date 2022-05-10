@@ -2,6 +2,9 @@ export const APP_URL = {
   addCase: "/addCase",
   savedCases: "/savedCases",
   actualCase: "/actualCase/:id",
-  actualCaseAnalysis: "/actualCase/:id/analytics",
+  actualCaseBasicAnalytics: "/actualCase/:id/analytics",
+  actualCaseAdvancedAnalytics: "/actualCase/:id/advanced",
+  influencers: "/influencers",
+  actualUser: "/influencers/:id",
   invalidPage: "/",
 };

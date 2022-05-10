@@ -13,9 +13,7 @@ export const ActualCaseContent: React.FC<ActualCaseContentInput> = ({
   tweetsCount,
   generalStats,
 }) => {
-  const { searchQuery } = useSearchContext();
-
-  React.useEffect(() => console.log(searchQuery, "ss"), [searchQuery]);
+  // const { searchQuery } = useSearchContext();
   return (
     <Box
       display="grid"

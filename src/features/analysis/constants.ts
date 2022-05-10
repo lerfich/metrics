@@ -19,7 +19,7 @@ export const ActualCaseSpreadsheetHeadlines = [
   },
   {
     name: "text",
-    label: "Текст",
+    label: "Сообщение",
     id: "text",
     // sortPath: (order: SortOrder) => ({
     //   userPreferences: { phoneNumber: order },

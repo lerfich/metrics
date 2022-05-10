@@ -55,7 +55,8 @@ export type SpreadsheetProps<T extends HeadlinesType> = {
     downloadHandler?: (rawData?: any) => void;
     rawData?: any;
     showTotalCount?: boolean;
-    shouldRedirect?: boolean;
+    shouldRedirectToCase?: boolean;
+    shouldRedirectToUser?: boolean;
   };
   toolbarHeader?: JSX.Element;
   toolbarHeaderWidth?: string;
@@ -147,7 +148,8 @@ export const Spreadsheet = <T extends HeadlinesType>({
               withIndex={!!toolbarOptions?.withIndex}
               index={index + (page - 1) * pageSize}
               howManySelected={selected.length}
-              shouldRedirect={toolbarOptions?.shouldRedirect}
+              shouldRedirectToCase={toolbarOptions?.shouldRedirectToCase}
+              shouldRedirectToUser={toolbarOptions?.shouldRedirectToUser}
             />
           );
         })}
@@ -163,7 +165,8 @@ export const Spreadsheet = <T extends HeadlinesType>({
     pageSize,
     selected,
     toolbarOptions?.mainToolbarAction,
-    toolbarOptions?.shouldRedirect,
+    toolbarOptions?.shouldRedirectToCase,
+    toolbarOptions?.shouldRedirectToUser,
     toolbarOptions?.withIndex,
   ]);
 

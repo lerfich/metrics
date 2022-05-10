@@ -16,7 +16,7 @@ const listItemIconCss = (theme: any) => css`
 `;
 
 const containerCss = (theme: any) => css`
-  width: 50%;
+  width: 70%;
   display: flex;
   height: 60%;
   flex-direction: row;

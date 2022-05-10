@@ -16,6 +16,7 @@ import {
 import { useHistory } from "react-router-dom";
 import { APP_URL } from "shared/components/navigation/constants";
 import { buildUrl } from "shared/routes/routerUtils";
+import { HistoryRounded } from "@mui/icons-material";
 
 const rowCss = css`
   cursor: pointer;
@@ -45,7 +46,8 @@ type SpreadsheetRowProps<T extends HeadlinesType> = {
   withIndex?: boolean;
   index: number;
   howManySelected: number;
-  shouldRedirect?: boolean;
+  shouldRedirectToCase?: boolean;
+  shouldRedirectToUser?: boolean;
 };
 
 export const SpreadsheetRow = <T extends HeadlinesType>({
@@ -58,18 +60,31 @@ export const SpreadsheetRow = <T extends HeadlinesType>({
   withIndex = true,
   index,
   howManySelected,
-  shouldRedirect,
+  shouldRedirectToCase,
+  shouldRedirectToUser,
 }: SpreadsheetRowProps<T>) => {
   const { setCurrentRowId } = useSpreadsheetContext();
   const history = useHistory();
 
   const onRowClick = React.useCallback(() => {
     setCurrentRowId(rowData.id);
-    const url = buildUrl(APP_URL.actualCase, {
+    const caseUrl = buildUrl(APP_URL.actualCase, {
       pathParams: { id: rowData.id },
     });
-    shouldRedirect && history.push(url);
-  }, [history, rowData.id, setCurrentRowId]);
+
+    const userUrl = buildUrl(APP_URL.actualUser, {
+      pathParams: { id: rowData.id },
+    });
+
+    shouldRedirectToUser && history.push(userUrl);
+    shouldRedirectToCase && history.push(caseUrl);
+  }, [
+    history,
+    rowData.id,
+    setCurrentRowId,
+    shouldRedirectToCase,
+    shouldRedirectToUser,
+  ]);
 
   const actionsPopover = (
     <SpreadsheetActionsPopover

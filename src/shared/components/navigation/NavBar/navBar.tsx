@@ -47,13 +47,13 @@ const NavBar: React.FC = () => {
           </Link>
         </div>
         <div className="links-container__link-container">
-          <Icon name="Insights" css={addCaseIconCss} />
+          <Icon name="People" css={addCaseIconCss} />
           <Link
             className="link"
-            to={APP_URL.actualCase}
-            css={isSelected(APP_URL.actualCase) && isSelectedCss}
+            to={APP_URL.influencers}
+            css={isSelected(APP_URL.influencers) && isSelectedCss}
           >
-            Анализ кейса
+            Инфлюенсеры
           </Link>
         </div>
       </div>

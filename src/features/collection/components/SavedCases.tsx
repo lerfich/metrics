@@ -90,7 +90,7 @@ const SavedCases = () => {
         data={savedCases}
         headlines={SavedCasesSpreadsheetHeadlines}
         toolbarOptions={{
-          shouldRedirect: true,
+          shouldRedirectToCase: true,
           withDownload: true,
           downloadHandler,
           rawData: tableData ?? [],
