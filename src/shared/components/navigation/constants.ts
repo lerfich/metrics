@@ -4,7 +4,6 @@ export const APP_URL = {
   actualCase: "/actualCase/:id",
   actualCaseBasicAnalytics: "/actualCase/:id/analytics",
   actualCaseAdvancedAnalytics: "/actualCase/:id/advanced",
-  influencers: "/influencers",
-  actualUser: "/influencers/:id",
+  influencers: "/actualCase/:id/influencers",
   invalidPage: "/",
 };

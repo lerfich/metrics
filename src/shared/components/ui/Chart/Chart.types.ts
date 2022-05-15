@@ -1,8 +1,15 @@
+export type LineChartSNDataItem = {
+  date: Date;
+  value: number | null;
+  sn: string;
+};
+
 export type LineChartDataItem = {
   date: Date;
   value: number | null;
 };
 
+export type LineChartSNData = LineChartSNDataItem[];
 export type LineChartData = LineChartDataItem[];
 
 export type BarChartDataItem = {

@@ -136,6 +136,9 @@ export const Chart: React.FC<ChartProps & ChartPropsVariants> = ({
             color: "#000",
             padding: 5,
           },
+          axisTick: {
+            interval: "auto",
+          },
         },
         yAxis: {
           name: yAxisName,
@@ -219,9 +222,13 @@ export const Chart: React.FC<ChartProps & ChartPropsVariants> = ({
     color,
     dateRange,
     overrideOptions,
+    theme.palette.info.light,
+    theme.palette.warning.light,
     type,
+    xAxisName,
     xAxisShowLabel,
     xAxisType,
+    yAxisName,
   ]);
 
   if (loading) {

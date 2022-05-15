@@ -1,6 +1,8 @@
 export const GRAPH_DATA_FREQUENCY = {
-  perWeek: "Неделя",
-  perMonth: "Месяц",
-  perYear: "Год",
-  perDecade: "Несколько лет",
+  perHour: "По часам",
+  perDay: "По дням",
+  perWeek: "По неделям",
+  perMonth: "По месяцам",
+  perQuarter: "По Кварталам",
+  perYear: "По год",
 };

@@ -2,7 +2,6 @@ import React from "react";
 
 import { Box, MenuItem, useTheme } from "@material-ui/core";
 import {
-  BarChartData,
   Chart,
   ChartDateRange,
   LineChartData,
@@ -17,24 +16,37 @@ import {
   inputInitiatorsAndInvolvedCounts,
   inputPostsCounts,
   inputUniqueUsers,
+  SOCIAL_NETWORKS,
 } from "shared/constants";
 
 interface ActualCaseBasicAnalyticsType {
   loading?: boolean;
+  socialFilter: {
+    [x: string]: boolean;
+  };
+  setIsShowingCheckbox: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const PIE_CHART_SIZE = 250;
 
 export const ActualCaseBasicAnalytics: React.FC<
   ActualCaseBasicAnalyticsType
-> = ({ loading }) => {
+> = ({ loading, socialFilter, setIsShowingCheckbox }) => {
   const theme: any = useTheme();
 
-  const [frequency, setFrequency] = React.useState("");
+  React.useEffect(() => setIsShowingCheckbox(true), [setIsShowingCheckbox]);
+  const [frequency, setFrequency] = React.useState(
+    Object.keys(GRAPH_DATA_FREQUENCY)[0]
+  );
 
   const onChangeFrequency = React.useCallback(
     (e) => setFrequency(e.target.value),
     [setFrequency]
+  );
+
+  React.useEffect(() => console.log(socialFilter, "ff"), [socialFilter]);
+  const activeFiltersList = Object.keys(socialFilter).filter(
+    (key) => socialFilter[key]
   );
 
   const currentFrequency = React.useMemo(() => {
@@ -42,80 +54,91 @@ export const ActualCaseBasicAnalytics: React.FC<
       case Object.keys(GRAPH_DATA_FREQUENCY)[0]: {
         return {
           min: new Date(DateTime.now().minus({ minutes: 1 }).toISO()),
-          max: new Date(DateTime.now().plus({ weeks: 1 }).toISO()),
+          max: new Date(DateTime.now().plus({ days: 1 }).toISO()), // по часам
         };
       }
 
       case Object.keys(GRAPH_DATA_FREQUENCY)[1]: {
         return {
           min: new Date(DateTime.now().toISO()),
-          max: new Date(DateTime.now().plus({ months: 1 }).toISO()),
+          max: new Date(DateTime.now().plus({ week: 1 }).toISO()), // по дням
         };
       }
 
       case Object.keys(GRAPH_DATA_FREQUENCY)[2]: {
         return {
           min: new Date(DateTime.now().toISO()),
-          max: new Date(DateTime.now().plus({ years: 1 }).toISO()),
+          max: new Date(DateTime.now().plus({ month: 1 }).toISO()), // по неделям
         };
       }
 
       case Object.keys(GRAPH_DATA_FREQUENCY)[3]: {
         return {
           min: new Date(DateTime.now().toISO()),
-          max: new Date(DateTime.now().plus({ years: 12 }).toISO()),
+          max: new Date(DateTime.now().plus({ year: 1 }).toISO()), // по месяцам
         };
       }
+
+      case Object.keys(GRAPH_DATA_FREQUENCY)[4]: {
+        return {
+          min: new Date(DateTime.now().toISO()),
+          max: new Date(DateTime.now().plus({ year: 1 }).toISO()), // по кварталам
+        };
+      }
+
+      case Object.keys(GRAPH_DATA_FREQUENCY)[5]: {
+        return {
+          min: new Date(DateTime.now().toISO()),
+          max: new Date(DateTime.now().plus({ years: 4 }).toISO()), // по годам
+        };
+      }
+
       default: {
         return {
           min: new Date(DateTime.now().toISO()),
-          max: new Date(DateTime.now().plus({ weeks: 2 }).toISO()),
+          max: new Date(DateTime.now().plus({ days: 1 }).toISO()),
         };
       }
     }
   }, [frequency]);
 
   const parsedPosts = React.useMemo(
-    (): BarChartData =>
+    (): LineChartData =>
       inputPostsCounts
+        .filter(({ sn }) => activeFiltersList[0] === sn)
         .filter(
           ({ date }) =>
             currentFrequency.max >= new Date(date.toISO()) &&
             new Date(date.toISO()) >= currentFrequency.min
         )
         .map(({ date, count }) => ({
-          category: date.setLocale("ru").toFormat("D"),
+          date: new Date(date.setLocale("ru").toISO()),
           value: count,
         })),
-    [currentFrequency.max, currentFrequency.min]
+    [activeFiltersList, currentFrequency.max, currentFrequency.min]
   );
 
   const uniqueUsers = React.useMemo(
     (): LineChartData =>
-      inputUniqueUsers.filter(
-        ({ date }) =>
-          currentFrequency.max >= date && date >= currentFrequency.min
-      ),
-    [currentFrequency.max, currentFrequency.min]
-  );
-
-  const chartDateRange: ChartDateRange = React.useMemo(
-    () => ({
-      min: currentFrequency.min,
-      max: currentFrequency.max,
-    }),
-    [currentFrequency.max, currentFrequency.min]
+      inputUniqueUsers
+        .filter(({ sn }) => activeFiltersList[0] === sn)
+        .filter(
+          ({ date }) =>
+            currentFrequency.max >= date && date >= currentFrequency.min
+        ),
+    [activeFiltersList, currentFrequency.max, currentFrequency.min]
   );
 
   const initiatorsAndInvolvedCounts = React.useMemo(
     () =>
       inputInitiatorsAndInvolvedCounts
+        ?.filter(({ sn }) => activeFiltersList[0] === sn)
         ?.filter(
           ({ date }) =>
             currentFrequency.max >= date && date >= currentFrequency.min
         )
         .slice(-1)[0] ?? { initiators: 0, outreach: 0 },
-    [currentFrequency.max, currentFrequency.min]
+    [activeFiltersList, currentFrequency.max, currentFrequency.min]
   );
 
   const ratios = React.useMemo(
@@ -139,6 +162,14 @@ export const ActualCaseBasicAnalytics: React.FC<
       initiatorsAndInvolvedCounts.initiators,
       initiatorsAndInvolvedCounts.outreach,
     ]
+  );
+
+  const chartDateRange: ChartDateRange = React.useMemo(
+    () => ({
+      min: currentFrequency.min,
+      max: currentFrequency.max,
+    }),
+    [currentFrequency.max, currentFrequency.min]
   );
 
   return (
@@ -167,7 +198,8 @@ export const ActualCaseBasicAnalytics: React.FC<
       </Box>
       <Box display="flex" justifyContent="center" alignItems="center">
         <Chart
-          type="bar"
+          type="line"
+          dateRange={chartDateRange}
           chartData={parsedPosts}
           height={290}
           loading={loading}

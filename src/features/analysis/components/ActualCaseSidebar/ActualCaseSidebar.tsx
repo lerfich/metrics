@@ -1,5 +1,12 @@
 import { css } from "@emotion/react";
-import { Box, Divider, List, ListItem, ListItemText } from "@material-ui/core";
+import {
+  Box,
+  Checkbox,
+  Divider,
+  List,
+  ListItem,
+  ListItemText,
+} from "@material-ui/core";
 import { ActualCaseContentInput } from "features/analysis/types";
 import { PaperLayout } from "shared/components/layouts/PaperLayout";
 import { Typography } from "shared/components/ui";
@@ -15,6 +22,9 @@ export const ActualCaseSidebar: React.FC<ActualCaseContentInput> = ({
   dateFilter,
   tags,
   filters,
+  socialFilter,
+  onChangeFilter,
+  isShowingCheckbox,
 }) => {
   return (
     <PaperLayout>
@@ -57,9 +67,23 @@ export const ActualCaseSidebar: React.FC<ActualCaseContentInput> = ({
               }}
             >
               {filters?.slice(0, MAX_FILTERS_LENGTH_SHOW).map((value) => (
-                <ListItem key={value} disableGutters>
+                <Box
+                  display="grid"
+                  gridTemplateColumns="auto auto"
+                  justifyContent="start"
+                  alignItems="center"
+                >
                   <ListItemText primary={`${value}`} />
-                </ListItem>
+                  {isShowingCheckbox && (
+                    <Checkbox
+                      value={socialFilter?.value}
+                      onChange={(e) =>
+                        onChangeFilter &&
+                        onChangeFilter(e, value?.split(" ")[0])
+                      }
+                    />
+                  )}
+                </Box>
               ))}
             </List>
           </Typography>

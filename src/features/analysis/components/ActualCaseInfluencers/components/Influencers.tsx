@@ -1,24 +1,30 @@
 import { css } from "@emotion/react";
 import { MenuItem, Box, Chip } from "@material-ui/core";
-import { InfluencerType, TweetsType } from "providers/types";
+import { InfluencerType } from "providers/types";
 import { useDatabaseContext } from "providers/useDatabaseContext";
 import React from "react";
-import { Select, Typography } from "shared/components/ui";
+import { Modal, Select, Typography } from "shared/components/ui";
 import {
   downloadCsv,
   formatDataToCsv,
   Spreadsheet,
+  useSpreadsheetContext,
 } from "shared/features/spreadsheet";
 import { InfluencersSpreadsheetHeadlines, SORT_TYPES } from "../constants";
+import { InfluencerProfile } from "./InfluencerProfile";
 
 const topCss = (theme: any) => css`
-  color: ${theme.palette.success.light};
+  color: ${theme.palette.primary.light};
+`;
+
+const sortTopCss = (theme: any) => css`
+  color: ${theme.palette.warning.dark};
 `;
 
 export const Influencers = () => {
   const { influencers } = useDatabaseContext();
   const [sortType, setSortType] = React.useState(Object.keys(SORT_TYPES)[0]);
-
+  const { currentRowId } = useSpreadsheetContext();
   const onChangeSort = React.useCallback(
     (e) => setSortType(e.target.value),
     [setSortType]
@@ -158,27 +164,56 @@ export const Influencers = () => {
     [switchCount, switchCountType]
   );
 
+  const [isInfluencerProfileVisible, setIsInfluencerProfileVisible] =
+    React.useState(false);
+
+  const { onInfluencerProfileOpen, onInfluencerProfileClose } = React.useMemo(
+    () => ({
+      onInfluencerProfileOpen: () => setIsInfluencerProfileVisible(true),
+      onInfluencerProfileClose: () => setIsInfluencerProfileVisible(false),
+    }),
+    []
+  );
+
   return (
     <Box display="grid" gridTemplateColumns="auto">
-      <Box pt={5} display="flex" justifyContent="center" alignItems="center">
+      <Modal
+        isVisibleDivider
+        titleProps={{ title: "Профиль инфлюенсера" }}
+        dialogProps={{
+          open: isInfluencerProfileVisible,
+          onClose: onInfluencerProfileClose,
+        }}
+      >
+        <InfluencerProfile
+          userId={currentRowId}
+          onModalClose={onInfluencerProfileClose}
+        />
+      </Modal>
+      <Box display="flex" justifyContent="center" alignItems="center">
         <Typography variant="subtitle2" css={topCss}>
           ТОП Инфлюенсеров
         </Typography>
-      </Box>
-      <Box m={3} display="grid" gridTemplateColumns="auto">
-        <Select
-          variant="outlined"
-          label="Выберите тип сортировки"
-          value={sortType}
-          onChange={onChangeSort}
-          size="small"
-        >
-          {Object.entries(SORT_TYPES).map((entry) => (
-            <MenuItem key={entry[0]} value={entry[0]}>
-              <Typography>{entry[1]}</Typography>
-            </MenuItem>
-          ))}
-        </Select>
+        <Box display="grid" gridTemplateColumns="auto" ml={1} mt={0}>
+          <Select
+            value={sortType}
+            onChange={onChangeSort}
+            size="medium"
+            disableUnderline
+            css={css`
+              height: 55px;
+            `}
+            labelWidth={150}
+          >
+            {Object.entries(SORT_TYPES).map((entry) => (
+              <MenuItem key={entry[0]} value={entry[0]}>
+                <Typography variant="subtitle5" css={sortTopCss}>
+                  {entry[1]}
+                </Typography>
+              </MenuItem>
+            ))}
+          </Select>
+        </Box>
       </Box>
       <Spreadsheet
         data={foundInfluencers}
@@ -187,8 +222,7 @@ export const Influencers = () => {
           withDownload: true,
           downloadHandler,
           rawData: influencers?.sort(compareInfluencers) ?? [],
-          showTotalCount: true,
-          shouldRedirectToUser: true,
+          shouldOpenModal: onInfluencerProfileOpen,
         }}
         cellActions={[]}
         itemsCount={influencers?.length ?? 0}

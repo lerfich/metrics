@@ -48,6 +48,7 @@ type SpreadsheetRowProps<T extends HeadlinesType> = {
   howManySelected: number;
   shouldRedirectToCase?: boolean;
   shouldRedirectToUser?: boolean;
+  shouldOpenModal?: () => void;
 };
 
 export const SpreadsheetRow = <T extends HeadlinesType>({
@@ -62,6 +63,7 @@ export const SpreadsheetRow = <T extends HeadlinesType>({
   howManySelected,
   shouldRedirectToCase,
   shouldRedirectToUser,
+  shouldOpenModal,
 }: SpreadsheetRowProps<T>) => {
   const { setCurrentRowId } = useSpreadsheetContext();
   const history = useHistory();
@@ -72,18 +74,17 @@ export const SpreadsheetRow = <T extends HeadlinesType>({
       pathParams: { id: rowData.id },
     });
 
-    const userUrl = buildUrl(APP_URL.actualUser, {
-      pathParams: { id: rowData.id },
-    });
+    if (shouldOpenModal) {
+      shouldOpenModal();
+    }
 
-    shouldRedirectToUser && history.push(userUrl);
     shouldRedirectToCase && history.push(caseUrl);
   }, [
     history,
     rowData.id,
     setCurrentRowId,
+    shouldOpenModal,
     shouldRedirectToCase,
-    shouldRedirectToUser,
   ]);
 
   const actionsPopover = (
