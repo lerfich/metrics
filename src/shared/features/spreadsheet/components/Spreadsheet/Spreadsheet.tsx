@@ -25,6 +25,8 @@ import {
 
 import { SpreadsheetPreloader } from "./SpreadsheetPreloader";
 import { SpreadsheetEmpty } from "./SpreadsheetEmpty";
+import { useDatabaseContext } from "providers/useDatabaseContext";
+import { CASE_STATUSES } from "shared/constants/status";
 
 const tableFooterCss = css`
   width: 100%;
@@ -57,6 +59,7 @@ export type SpreadsheetProps<T extends HeadlinesType> = {
     showTotalCount?: boolean;
     shouldRedirectToCase?: boolean;
     shouldRedirectToUser?: boolean;
+    shouldOpenModal?: () => void;
   };
   toolbarHeader?: JSX.Element;
   toolbarHeaderWidth?: string;
@@ -82,6 +85,7 @@ export const Spreadsheet = <T extends HeadlinesType>({
 }: SpreadsheetProps<T>) => {
   const { filter, sortOption, page, pageSize, selected, setSelected } =
     useSpreadsheetContext();
+  const { database } = useDatabaseContext();
 
   React.useEffect(() => {
     setSelected([]);
@@ -136,6 +140,10 @@ export const Spreadsheet = <T extends HeadlinesType>({
             (selectedId) => selectedId === row.id
           );
 
+          const completedCasesIdsList = database
+            ?.filter(({ status }) => status === CASE_STATUSES.ready)
+            ?.map(({ id }) => id);
+
           return (
             <SpreadsheetRow
               withCheckbox={!!toolbarOptions?.mainToolbarAction}
@@ -148,8 +156,12 @@ export const Spreadsheet = <T extends HeadlinesType>({
               withIndex={!!toolbarOptions?.withIndex}
               index={index + (page - 1) * pageSize}
               howManySelected={selected.length}
-              shouldRedirectToCase={toolbarOptions?.shouldRedirectToCase}
+              shouldRedirectToCase={
+                completedCasesIdsList?.includes(row.id) &&
+                toolbarOptions?.shouldRedirectToCase
+              }
               shouldRedirectToUser={toolbarOptions?.shouldRedirectToUser}
+              shouldOpenModal={toolbarOptions?.shouldOpenModal}
             />
           );
         })}
@@ -158,6 +170,7 @@ export const Spreadsheet = <T extends HeadlinesType>({
   }, [
     cellActions,
     data,
+    database,
     headlines,
     loading,
     onSelect,
@@ -165,6 +178,7 @@ export const Spreadsheet = <T extends HeadlinesType>({
     pageSize,
     selected,
     toolbarOptions?.mainToolbarAction,
+    toolbarOptions?.shouldOpenModal,
     toolbarOptions?.shouldRedirectToCase,
     toolbarOptions?.shouldRedirectToUser,
     toolbarOptions?.withIndex,

@@ -1,7 +1,7 @@
 export const InfluencersSpreadsheetHeadlines = (label: string) => [
   {
     name: "userId",
-    label: "Tweet ID",
+    label: "ID пользователя",
     id: "tweetId",
   },
   {

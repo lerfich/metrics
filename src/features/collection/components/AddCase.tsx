@@ -306,45 +306,59 @@ const AddCase = () => {
               <Icon name="HelpOutline" css={helperMarkCss} />
             </Tooltip>
           </Box>
-          <Box
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-          >
-            <FormKeyboardDatePicker
-              datePickerProps={{
-                format: "dd MMM yyyy",
-                keyboardIcon: (
-                  <Icon name="EventNote" size="small" css={calendarIconCss} />
-                ),
-                maxDate: values.endDate ?? undefined,
-                maxDateMessage: "Start date cant be later than the end date.",
-                disableFuture: true,
-                InputProps: { style: datePickerStyle },
-                allowKeyboardControl: true,
-                inputVariant: "outlined",
-                variant: "inline",
-                size: "small",
-              }}
-              fieldProps={{ name: "startDate" }}
-            />
-            <FormKeyboardDatePicker
-              datePickerProps={{
-                format: "dd MMM yyyy",
-                keyboardIcon: (
-                  <Icon name="EventNote" size="small" css={calendarIconCss} />
-                ),
-                minDate: values.startDate ?? undefined,
-                maxDateMessage: "End date cant be earlier than the start date.",
-                disableFuture: true,
-                InputProps: { style: datePickerStyle },
-                allowKeyboardControl: true,
-                inputVariant: "outlined",
-                variant: "inline",
-                size: "small",
-              }}
-              fieldProps={{ name: "endDate" }}
-            />
+          <Box display="flex" justifyContent="start" alignItems="center">
+            <Box
+              display="flex"
+              flexDirection="column"
+              justifyContent="end"
+              mt={2}
+            >
+              <Typography> Выбрите дату начала:</Typography>
+              <FormKeyboardDatePicker
+                datePickerProps={{
+                  format: "dd MMM yyyy",
+                  keyboardIcon: (
+                    <Icon name="EventNote" size="small" css={calendarIconCss} />
+                  ),
+                  maxDate: values.endDate ?? undefined,
+                  maxDateMessage: "Start date cant be later than the end date.",
+                  disableFuture: true,
+                  InputProps: { style: datePickerStyle },
+                  allowKeyboardControl: true,
+                  inputVariant: "outlined",
+                  variant: "inline",
+                  size: "small",
+                }}
+                fieldProps={{ name: "startDate" }}
+              />
+            </Box>
+            <Box
+              display="flex"
+              flexDirection="column"
+              justifyContent="end"
+              mt={2}
+              ml={3}
+            >
+              <Typography variant="body1">Выбрите дату окончания:</Typography>
+              <FormKeyboardDatePicker
+                datePickerProps={{
+                  format: "dd MMM yyyy",
+                  keyboardIcon: (
+                    <Icon name="EventNote" size="small" css={calendarIconCss} />
+                  ),
+                  minDate: values.startDate ?? undefined,
+                  maxDateMessage:
+                    "End date cant be earlier than the start date.",
+                  disableFuture: true,
+                  InputProps: { style: datePickerStyle },
+                  allowKeyboardControl: true,
+                  inputVariant: "outlined",
+                  variant: "inline",
+                  size: "small",
+                }}
+                fieldProps={{ name: "endDate" }}
+              />
+            </Box>
           </Box>
           <Box display="grid" gridTemplateRows="auto" alignItems="center">
             {SOCIAL_NETWORKS.map((network) => (

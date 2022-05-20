@@ -1,4 +1,5 @@
 import { DateTime } from "luxon";
+import { Dispatch, SetStateAction } from "react";
 
 export interface ActualCaseContentInput {
   tweets?: {
@@ -21,6 +22,10 @@ export interface ActualCaseContentInput {
   };
   tags?: string[];
   filters?: string[];
+  socialFilter?: {
+    [x: string]: boolean;
+  };
+  onChangeFilter?: (e: any, name: any) => void;
+  isShowingCheckbox?: boolean;
+  setIsShowingCheckbox?: React.Dispatch<React.SetStateAction<boolean>>;
 }
-
-// export interface ActualCaseSidebarInput {}

@@ -46,16 +46,6 @@ const NavBar: React.FC = () => {
             Мои задания
           </Link>
         </div>
-        <div className="links-container__link-container">
-          <Icon name="People" css={addCaseIconCss} />
-          <Link
-            className="link"
-            to={APP_URL.influencers}
-            css={isSelected(APP_URL.influencers) && isSelectedCss}
-          >
-            Инфлюенсеры
-          </Link>
-        </div>
       </div>
       <div className="nav-bar-img-container">
         <img className="nav-bar-img" src={NavBarImage} alt="navBarImage" />

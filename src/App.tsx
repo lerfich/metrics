@@ -10,8 +10,6 @@ import { ActualCasePage } from "features/analysis/pages/ActualCasePage";
 import { RouterSwitchSymbol } from "shared/symbols/RouterSwitchSymbol";
 import { AddCasePage } from "features/collection/pages/AddCasePage";
 import { SavedCasesPage } from "features/collection/pages/SavedCasesPage";
-import { Influencers } from "features/influencers";
-import { InfluencerProfile } from "features/influencers/components/InfluencerProfile";
 
 export const App: React.FC = () => {
   return (
@@ -36,18 +34,15 @@ export const App: React.FC = () => {
                     <Route
                       path={[
                         APP_URL.actualCase,
+                        APP_URL.influencers,
                         APP_URL.actualCaseBasicAnalytics,
                         APP_URL.actualCaseAdvancedAnalytics,
+                        APP_URL.actualCaseSemanticAnalytics,
+                        APP_URL.actualCaseTopicAnalytics,
                       ]}
                       exact
                     >
                       <ActualCasePage />
-                    </Route>
-                    <Route path={APP_URL.influencers} exact>
-                      <Influencers />
-                    </Route>
-                    <Route path={APP_URL.actualUser} exact>
-                      <InfluencerProfile />
                     </Route>
                   </React.Fragment>
                 }

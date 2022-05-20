@@ -12,17 +12,14 @@ export const ActualCaseContent: React.FC<ActualCaseContentInput> = ({
   tweets,
   tweetsCount,
   generalStats,
+  setIsShowingCheckbox,
 }) => {
-  // const { searchQuery } = useSearchContext();
+  React.useEffect(
+    () => setIsShowingCheckbox && setIsShowingCheckbox(false),
+    [setIsShowingCheckbox]
+  );
   return (
-    <Box
-      display="grid"
-      gridTemplateRows="auto"
-      mx={2}
-      my={3}
-      gridRowGap={5}
-      // height="100%"
-    >
+    <Box display="grid" gridTemplateRows="auto" mx={2} my={3} gridRowGap={5}>
       <ActualCaseContentMetaData generalStats={generalStats} />
       <ActualCaseContentFilters />
       <ActualCaseContentSpreadsheet tweets={tweets} tweetsCount={tweetsCount} />
