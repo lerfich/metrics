@@ -3,7 +3,7 @@ import { Box, Typography, useTheme } from "@mui/material";
 import ReactEChartsCore from "echarts-for-react/lib/core";
 import * as echarts from "echarts/core";
 import { SVGRenderer } from "echarts/renderers";
-import { LineChart, BarChart, PieChart } from "echarts/charts";
+import { LineChart, BarChart, PieChart, ScatterChart } from "echarts/charts";
 import { GridComponent } from "echarts/components";
 import type { EChartsOption } from "echarts";
 import _ from "lodash";
@@ -17,9 +17,15 @@ import type {
   PieChartData,
   ChartDateRange,
 } from "./Chart.types";
-import { DateTime } from "luxon";
 
-echarts.use([SVGRenderer, LineChart, BarChart, PieChart, GridComponent]);
+echarts.use([
+  SVGRenderer,
+  LineChart,
+  BarChart,
+  PieChart,
+  GridComponent,
+  ScatterChart,
+]);
 
 const boxStyles: SxProp = {
   width: "100%",
@@ -35,9 +41,36 @@ const boxStyles: SxProp = {
 };
 
 type ChartPropsVariants =
-  | { type: "line"; chartData?: LineChartData }
-  | { type: "bar"; chartData?: BarChartData }
-  | { type: "pie"; chartData?: PieChartData };
+  | {
+      type: "line";
+      chartData?: LineChartData;
+      extraChartData?: LineChartData;
+      additionalChartData?: LineChartData;
+    }
+  | {
+      type: "bar";
+      chartData?: BarChartData;
+      extraChartData?: BarChartData;
+      additionalChartData?: BarChartData;
+    }
+  | {
+      type: "pie";
+      chartData?: PieChartData;
+      extraChartData?: PieChartData;
+      additionalChartData?: PieChartData;
+    }
+  | {
+      type: "bubble";
+      chartData?: EChartsOption;
+      extraChartData?: any;
+      additionalChartData?: any;
+    }
+  | {
+      type: "customBar";
+      chartData?: EChartsOption;
+      extraChartData?: any;
+      additionalChartData?: any;
+    };
 
 type ChartProps = {
   xAxisType?: "value" | "time";
@@ -49,6 +82,8 @@ type ChartProps = {
   xAxisName?: string;
   yAxisName?: string;
   loading?: boolean;
+  smooth?: boolean;
+  categoryName?: string;
 };
 
 export const Chart: React.FC<ChartProps & ChartPropsVariants> = ({
@@ -56,6 +91,8 @@ export const Chart: React.FC<ChartProps & ChartPropsVariants> = ({
   xAxisType = "time",
   xAxisShowLabel = true,
   chartData,
+  extraChartData,
+  additionalChartData,
   color = "#0089ff",
   height = 250,
   overrideOptions,
@@ -63,6 +100,8 @@ export const Chart: React.FC<ChartProps & ChartPropsVariants> = ({
   xAxisName = "",
   yAxisName = "",
   loading = false,
+  smooth = false,
+  categoryName = "category",
 }) => {
   const theme = useTheme();
   const chartOptions = React.useMemo((): EChartsOption | undefined => {
@@ -97,24 +136,65 @@ export const Chart: React.FC<ChartProps & ChartPropsVariants> = ({
             verticalAlign: "middle",
           },
         },
-        series: {
-          type,
-          lineStyle: {
-            color,
+        series: [
+          {
+            type,
+            lineStyle: {
+              color,
+            },
+            symbol: "none",
+            endLabel: {
+              show: true,
+              color,
+              formatter: ({ value }) =>
+                _.isArray(value) ? value[1].toString() : value.toString(),
+            },
+            animation: true,
+            data: chartData.map((point) => ({
+              name: point.date.toString(),
+              value: [point.date, point.value as number],
+            })),
+            smooth,
           },
-          symbol: "none",
-          endLabel: {
-            show: true,
-            color,
-            formatter: ({ value }) =>
-              _.isArray(value) ? value[1].toString() : value.toString(),
+          {
+            type,
+            lineStyle: {
+              color: "green",
+            },
+            symbol: "none",
+            endLabel: {
+              show: true,
+              color: "green",
+              formatter: ({ value }) =>
+                _.isArray(value) ? value[1].toString() : value.toString(),
+            },
+            animation: true,
+            data: extraChartData?.map((point) => ({
+              name: point.date.toString(),
+              value: [point.date, point.value as number],
+            })),
+            smooth,
           },
-          animation: true,
-          data: chartData.map((point) => ({
-            name: point.date.toString(),
-            value: [point.date, point.value as number],
-          })),
-        },
+          {
+            type,
+            lineStyle: {
+              color: "red",
+            },
+            symbol: "none",
+            endLabel: {
+              show: true,
+              color: "red",
+              formatter: ({ value }) =>
+                _.isArray(value) ? value[1].toString() : value.toString(),
+            },
+            animation: true,
+            data: additionalChartData?.map((point) => ({
+              name: point.date.toString(),
+              value: [point.date, point.value as number],
+            })),
+            smooth,
+          },
+        ],
       };
     }
 
@@ -158,7 +238,7 @@ export const Chart: React.FC<ChartProps & ChartPropsVariants> = ({
           },
           animation: false,
           data: chartData.map((point) => ({
-            name: "category",
+            name: categoryName,
             value: [_.capitalize(point.category), point.value as number],
           })),
         },
@@ -181,9 +261,9 @@ export const Chart: React.FC<ChartProps & ChartPropsVariants> = ({
         series: {
           type,
           radius: ["0%", "65%"], // it's been 40/85
-          avoidLabelOverlap: false,
+          avoidLabelOverlap: true,
           label: {
-            fontSize: 20,
+            fontSize: 12,
             show: true,
             color: "darkblue",
           },
@@ -197,6 +277,15 @@ export const Chart: React.FC<ChartProps & ChartPropsVariants> = ({
           })),
         },
       };
+    }
+
+    if (type === "bubble") {
+      dataOptions = chartData;
+    }
+
+    if (type === "customBar") {
+      console.log("looks custom");
+      dataOptions = chartData;
     }
 
     return {
@@ -218,10 +307,13 @@ export const Chart: React.FC<ChartProps & ChartPropsVariants> = ({
       ...overrideOptions,
     };
   }, [
+    additionalChartData,
     chartData,
     color,
     dateRange,
+    extraChartData,
     overrideOptions,
+    smooth,
     theme.palette.info.light,
     theme.palette.warning.light,
     type,
@@ -252,7 +344,7 @@ export const Chart: React.FC<ChartProps & ChartPropsVariants> = ({
       <ReactEChartsCore
         echarts={echarts}
         option={chartOptions}
-        notMerge={true}
+        notMerge={false}
         lazyUpdate={true}
         className="test"
       />

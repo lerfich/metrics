@@ -40,6 +40,16 @@ export type DatabaseType = {
   generalStats?: GeneralStatsType;
 };
 
+export type SemanticWordType = {
+  wordId: number;
+  word: string;
+  tonality: string;
+  timesMeet: number;
+  phrasesMetIn: string[];
+};
+
+export type SemanticWordsListType = SemanticWordType[];
+
 export type DatabaseInfluencersType = InfluencerType[];
 
 export type DatabaseContextValue = {
@@ -47,4 +57,16 @@ export type DatabaseContextValue = {
   setDatabase: React.Dispatch<React.SetStateAction<DatabaseType[]>>;
   influencers: DatabaseInfluencersType;
   setInfluencers: React.Dispatch<React.SetStateAction<DatabaseInfluencersType>>;
+  positiveSemanticWords: SemanticWordsListType;
+  setPositiveSemanticWords: React.Dispatch<
+    React.SetStateAction<SemanticWordsListType>
+  >;
+  neutralSemanticWords: SemanticWordsListType;
+  setNeutralSemanticWords: React.Dispatch<
+    React.SetStateAction<SemanticWordsListType>
+  >;
+  negativeSemanticWords: SemanticWordsListType;
+  setNegativeSemanticWords: React.Dispatch<
+    React.SetStateAction<SemanticWordsListType>
+  >;
 };

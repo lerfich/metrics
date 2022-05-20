@@ -12,6 +12,8 @@ import { ActualCaseSidebar } from "../ActualCaseSidebar";
 import { ActualCaseContent } from "../ActualCaseContent";
 import { ActualCaseAdvancedAnalytics } from "../ActualCaseAdvancedAnalytics";
 import { InfluencersPage } from "features/analysis/pages/InfluencersPage";
+import { TopicAnalysisPage } from "features/analysis/pages/TopicAnalysisPage";
+import { SemanticAnalysisPage } from "features/analysis/pages/SemanticAnalysisPage";
 
 export const ActualCaseNavbarWrapper: React.FC<ActualCaseContentInput> = ({
   generalStats,
@@ -66,16 +68,6 @@ export const ActualCaseNavbarWrapper: React.FC<ActualCaseContentInput> = ({
       : {}
   );
 
-  // const [socialFilter, setSocialFilter] = React.useState({
-  //   facebook: false,
-  //   instagram: false,
-  //   twitter: false,
-  //   vkotakte: false,
-  //   odnoklassniki: false,
-  //   youtube: false,
-  //   telegram: false,
-  // });
-
   const [isShowingCheckbox, setIsShowingCheckbox] = React.useState(false);
 
   const onChangeSocialFilter = React.useCallback(
@@ -122,6 +114,16 @@ export const ActualCaseNavbarWrapper: React.FC<ActualCaseContentInput> = ({
                 </Route>
                 <Route path={APP_URL.actualCaseAdvancedAnalytics} exact>
                   <ActualCaseAdvancedAnalytics
+                    setIsShowingCheckbox={setIsShowingCheckbox}
+                  />
+                </Route>
+                <Route path={APP_URL.actualCaseSemanticAnalytics} exact>
+                  <SemanticAnalysisPage
+                    setIsShowingCheckbox={setIsShowingCheckbox}
+                  />
+                </Route>
+                <Route path={APP_URL.actualCaseTopicAnalytics} exact>
+                  <TopicAnalysisPage
                     setIsShowingCheckbox={setIsShowingCheckbox}
                   />
                 </Route>

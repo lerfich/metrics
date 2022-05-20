@@ -172,7 +172,7 @@ export const InfluencerProfile = ({
         <Icon name="Label" css={labelIconCss} />
         <Box display="flex" justifyContent="center" mt={2}>
           <Typography variant="subtitle6" css={firstColorCss} align="center">
-            Первый в этой категории
+            First by this category
           </Typography>
         </Box>
       </Box>

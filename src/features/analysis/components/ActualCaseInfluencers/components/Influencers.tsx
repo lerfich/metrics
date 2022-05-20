@@ -158,7 +158,7 @@ export const Influencers = () => {
             `Количество ${switchCountType}`,
           ],
         }),
-        "Топ инфлюенсеров"
+        "Influencers TOP"
       );
     },
     [switchCount, switchCountType]
@@ -192,7 +192,7 @@ export const Influencers = () => {
       </Modal>
       <Box display="flex" justifyContent="center" alignItems="center">
         <Typography variant="subtitle2" css={topCss}>
-          ТОП Инфлюенсеров
+          Influencers TOP
         </Typography>
         <Box display="grid" gridTemplateColumns="auto" ml={1} mt={0}>
           <Select

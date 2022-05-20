@@ -1,4 +1,3 @@
-import { STATUS_CODES } from "http";
 import { DateTime } from "luxon";
 import { LineChartData, LineChartSNData } from "shared/components/ui";
 import { SOCIAL_NETWORKS } from "./social";
@@ -52,6 +51,123 @@ export const TOP_INFLUENCERS = [
     tweetsCount: 391,
     repostsCount: 90,
     involved: 30,
+  },
+];
+
+export const TOP_POSITIVE_SEMANTIC_ANALYSIS_WORDS = [
+  {
+    wordId: 33121,
+    word: "Flying",
+    tonality: "positive",
+    timesMeet: 161,
+    phrasesMetIn: ["He was Flying to a while", "Never Flying too much"],
+  },
+  {
+    wordId: 51121,
+    word: "Jumping",
+    tonality: "positive",
+    timesMeet: 163,
+    phrasesMetIn: ["He was Jumping to a while", "Never Jumping too much"],
+  },
+  {
+    wordId: 81121,
+    word: "Tryharding",
+    tonality: "positive",
+    timesMeet: 80,
+    phrasesMetIn: ["He was Tryharding to a while", "Never Tryharding too much"],
+  },
+  {
+    wordId: 18121,
+    word: "Playing",
+    tonality: "positive",
+    timesMeet: 190,
+    phrasesMetIn: ["He was Playing to a while", "Never Playing too much"],
+  },
+  {
+    wordId: 90121,
+    word: "Swimming",
+    tonality: "positive",
+    timesMeet: 98,
+    phrasesMetIn: ["He was Swimming to a while", "Never Swimming too much"],
+  },
+];
+
+export const TOP_NEGATIVE_SEMANTIC_ANALYSIS_WORDS = [
+  {
+    wordId: 11001,
+    word: "Smoking",
+    tonality: "negative",
+    timesMeet: 92,
+    phrasesMetIn: ["He was Smoking to a while", "Never Smoking too much"],
+  },
+  {
+    wordId: 11191,
+    word: "Hassling",
+    tonality: "negative",
+    timesMeet: 32,
+    phrasesMetIn: ["He was Hassling to a while", "Never Hassling too much"],
+  },
+  {
+    wordId: 11171,
+    word: "Sensing",
+    tonality: "negative",
+    timesMeet: 62,
+    phrasesMetIn: ["He was Sensing to a while", "Never Sensing too much"],
+  },
+  {
+    wordId: 11621,
+    word: "Make no sense",
+    tonality: "negative",
+    timesMeet: 12,
+    phrasesMetIn: [
+      "He was Make no sense to a while",
+      "Never Make no sense too much",
+    ],
+  },
+  {
+    wordId: 11521,
+    word: "erm",
+    tonality: "negative",
+    timesMeet: 100,
+    phrasesMetIn: ["He was erm to a while", "Never erm too much"],
+  },
+];
+
+export const TOP_NEUTRAL_SEMANTIC_ANALYSIS_WORDS = [
+  {
+    wordId: 11121,
+    word: "why",
+    tonality: "neutral",
+    timesMeet: 101,
+    phrasesMetIn: ["He was why to a while", "Never why too much"],
+  },
+  {
+    wordId: 11221,
+    word: "tell",
+    tonality: "neutral",
+    timesMeet: 103,
+    phrasesMetIn: ["He was tell to a while", "Never tell too much"],
+  },
+  {
+    wordId: 11421,
+    word: "idk",
+    tonality: "neutral",
+    timesMeet: 198,
+    phrasesMetIn: ["He was idk to a while", "Never idk too much"],
+  },
+  {
+    wordId: 11521,
+    word: "cya",
+    tonality: "neutral",
+    timesMeet: 23,
+    phrasesMetIn: ["He was cya to a while", "Never cya too much"],
+  },
+  {
+    wordId: 10221,
+    word: "nvm",
+    tonality: "neutral",
+    timesMeet: 28,
+    phrasesMetIn: ["He was nvm to a while", "Never nvm too much"],
   },
 ];
 
@@ -605,5 +721,278 @@ export const inputUniqueUsers: LineChartSNData = [
     date: new Date(DateTime.now().plus({ months: 13 }).toISO()),
     value: 130,
     sn: SOCIAL_NETWORKS[6].shortName,
+  },
+];
+
+export const inputPositiveTonality: LineChartData = [
+  {
+    date: new Date(DateTime.now().toISO()),
+    value: 20,
+  },
+  {
+    date: new Date(DateTime.now().plus({ hours: 1, minutes: 5 }).toISO()),
+    value: 22,
+  },
+  {
+    date: new Date(DateTime.now().plus({ hours: 3 }).toISO()),
+    value: 25,
+  },
+  {
+    date: new Date(DateTime.now().plus({ hours: 7 }).toISO()),
+    value: 29,
+  },
+  {
+    date: new Date(DateTime.now().plus({ hours: 18 }).toISO()),
+    value: 31,
+  },
+  {
+    date: new Date(DateTime.now().plus({ day: 1 }).toISO()),
+    value: 32,
+  },
+  {
+    date: new Date(DateTime.now().plus({ day: 2 }).toISO()),
+    value: 19,
+  },
+  {
+    date: new Date(DateTime.now().plus({ day: 3 }).toISO()),
+    value: 22,
+  },
+  {
+    date: new Date(DateTime.now().plus({ day: 4 }).toISO()),
+    value: 28,
+  },
+  {
+    date: new Date(DateTime.now().plus({ day: 5 }).toISO()),
+    value: 29,
+  },
+  {
+    date: new Date(DateTime.now().plus({ day: 6 }).toISO()),
+    value: 41,
+  },
+  {
+    date: new Date(DateTime.now().plus({ day: 8 }).toISO()),
+    value: 18,
+  },
+  {
+    date: new Date(DateTime.now().plus({ day: 13 }).toISO()),
+    value: 84,
+  },
+  {
+    date: new Date(DateTime.now().plus({ day: 15 }).toISO()),
+    value: 12,
+  },
+  {
+    date: new Date(DateTime.now().plus({ weeks: 3 }).toISO()),
+    value: 15,
+  },
+  {
+    date: new Date(DateTime.now().plus({ days: 27 }).toISO()),
+    value: 31,
+  },
+  {
+    date: new Date(DateTime.now().plus({ months: 3 }).toISO()),
+    value: 17,
+  },
+  {
+    date: new Date(DateTime.now().plus({ months: 5 }).toISO()),
+    value: 44,
+  },
+  {
+    date: new Date(DateTime.now().plus({ months: 8 }).toISO()),
+    value: 46,
+  },
+  {
+    date: new Date(DateTime.now().plus({ months: 10 }).toISO()),
+    value: 31,
+  },
+  {
+    date: new Date(DateTime.now().plus({ months: 15 }).toISO()),
+    value: 37,
+  },
+  {
+    date: new Date(DateTime.now().plus({ years: 7 }).toISO()),
+    value: 33,
+  },
+];
+
+export const inputNeutralTonality: LineChartData = [
+  {
+    date: new Date(DateTime.now().toISO()),
+    value: 5,
+  },
+  {
+    date: new Date(DateTime.now().plus({ hours: 1, minutes: 5 }).toISO()),
+    value: 2,
+  },
+  {
+    date: new Date(DateTime.now().plus({ hours: 3 }).toISO()),
+    value: 5,
+  },
+  {
+    date: new Date(DateTime.now().plus({ hours: 7 }).toISO()),
+    value: 9,
+  },
+  {
+    date: new Date(DateTime.now().plus({ hours: 18 }).toISO()),
+    value: 11,
+  },
+  {
+    date: new Date(DateTime.now().plus({ day: 1 }).toISO()),
+    value: 10,
+  },
+  {
+    date: new Date(DateTime.now().plus({ day: 2 }).toISO()),
+    value: 8,
+  },
+  {
+    date: new Date(DateTime.now().plus({ day: 3 }).toISO()),
+    value: 5,
+  },
+  {
+    date: new Date(DateTime.now().plus({ day: 4 }).toISO()),
+    value: 8,
+  },
+  {
+    date: new Date(DateTime.now().plus({ day: 5 }).toISO()),
+    value: 9,
+  },
+  {
+    date: new Date(DateTime.now().plus({ day: 6 }).toISO()),
+    value: 5,
+  },
+  {
+    date: new Date(DateTime.now().plus({ day: 8 }).toISO()),
+    value: 8,
+  },
+  {
+    date: new Date(DateTime.now().plus({ day: 13 }).toISO()),
+    value: 4,
+  },
+  {
+    date: new Date(DateTime.now().plus({ day: 15 }).toISO()),
+    value: 10,
+  },
+  {
+    date: new Date(DateTime.now().plus({ weeks: 3 }).toISO()),
+    value: 5,
+  },
+  {
+    date: new Date(DateTime.now().plus({ days: 27 }).toISO()),
+    value: 1,
+  },
+  {
+    date: new Date(DateTime.now().plus({ months: 3 }).toISO()),
+    value: 7,
+  },
+  {
+    date: new Date(DateTime.now().plus({ months: 5 }).toISO()),
+    value: 4,
+  },
+  {
+    date: new Date(DateTime.now().plus({ months: 8 }).toISO()),
+    value: 6,
+  },
+  {
+    date: new Date(DateTime.now().plus({ months: 10 }).toISO()),
+    value: 11,
+  },
+  {
+    date: new Date(DateTime.now().plus({ months: 15 }).toISO()),
+    value: 7,
+  },
+  {
+    date: new Date(DateTime.now().plus({ years: 7 }).toISO()),
+    value: 3,
+  },
+];
+
+export const inputNegativeTonality: LineChartData = [
+  {
+    date: new Date(DateTime.now().toISO()),
+    value: 1,
+  },
+  {
+    date: new Date(DateTime.now().plus({ hours: 1, minutes: 5 }).toISO()),
+    value: 2,
+  },
+  {
+    date: new Date(DateTime.now().plus({ hours: 3 }).toISO()),
+    value: 2,
+  },
+  {
+    date: new Date(DateTime.now().plus({ hours: 7 }).toISO()),
+    value: 2,
+  },
+  {
+    date: new Date(DateTime.now().plus({ hours: 18 }).toISO()),
+    value: 1,
+  },
+  {
+    date: new Date(DateTime.now().plus({ day: 1 }).toISO()),
+    value: 2,
+  },
+  {
+    date: new Date(DateTime.now().plus({ day: 2 }).toISO()),
+    value: 1,
+  },
+  {
+    date: new Date(DateTime.now().plus({ day: 3 }).toISO()),
+    value: 2,
+  },
+  {
+    date: new Date(DateTime.now().plus({ day: 4 }).toISO()),
+    value: 2,
+  },
+  {
+    date: new Date(DateTime.now().plus({ day: 5 }).toISO()),
+    value: 2,
+  },
+  {
+    date: new Date(DateTime.now().plus({ day: 6 }).toISO()),
+    value: 1,
+  },
+  {
+    date: new Date(DateTime.now().plus({ day: 8 }).toISO()),
+    value: 1,
+  },
+  {
+    date: new Date(DateTime.now().plus({ day: 13 }).toISO()),
+    value: 4,
+  },
+  {
+    date: new Date(DateTime.now().plus({ day: 15 }).toISO()),
+    value: 12,
+  },
+  {
+    date: new Date(DateTime.now().plus({ weeks: 3 }).toISO()),
+    value: 1,
+  },
+  {
+    date: new Date(DateTime.now().plus({ days: 27 }).toISO()),
+    value: 1,
+  },
+  {
+    date: new Date(DateTime.now().plus({ months: 3 }).toISO()),
+    value: 1,
+  },
+  {
+    date: new Date(DateTime.now().plus({ months: 5 }).toISO()),
+    value: 4,
+  },
+  {
+    date: new Date(DateTime.now().plus({ months: 8 }).toISO()),
+    value: 4,
+  },
+  {
+    date: new Date(DateTime.now().plus({ months: 10 }).toISO()),
+    value: 1,
+  },
+  {
+    date: new Date(DateTime.now().plus({ months: 15 }).toISO()),
+    value: 3,
+  },
+  {
+    date: new Date(DateTime.now().plus({ years: 7 }).toISO()),
+    value: 3,
   },
 ];

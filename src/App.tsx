@@ -37,6 +37,8 @@ export const App: React.FC = () => {
                         APP_URL.influencers,
                         APP_URL.actualCaseBasicAnalytics,
                         APP_URL.actualCaseAdvancedAnalytics,
+                        APP_URL.actualCaseSemanticAnalytics,
+                        APP_URL.actualCaseTopicAnalytics,
                       ]}
                       exact
                     >

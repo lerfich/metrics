@@ -1,10 +1,10 @@
 import React from "react";
 
-import { Box, MenuItem, useTheme } from "@material-ui/core";
+import { Avatar, Box, IconButton, MenuItem, useTheme } from "@material-ui/core";
 import {
   Chart,
   ChartDateRange,
-  LineChartData,
+  Icon,
   Select,
   Typography,
 } from "shared/components/ui";
@@ -16,8 +16,12 @@ import {
   inputInitiatorsAndInvolvedCounts,
   inputPostsCounts,
   inputUniqueUsers,
-  SOCIAL_NETWORKS,
 } from "shared/constants";
+import {
+  downloadDiagramHandler,
+  downloadPostsHandler,
+  downloadUniqueHandler,
+} from "./utils";
 
 interface ActualCaseBasicAnalyticsType {
   loading?: boolean;
@@ -26,6 +30,19 @@ interface ActualCaseBasicAnalyticsType {
   };
   setIsShowingCheckbox: React.Dispatch<React.SetStateAction<boolean>>;
 }
+
+const avatarCss = css`
+  margin-top: -30%;
+`;
+
+const iconCss = (theme: any) => css`
+  color: ${theme.palette.warning.light};
+`;
+
+const exportCss = (theme: any) => css`
+  color: ${theme.palette.primary.dark};
+  line-height: 10px;
+`;
 
 const PIE_CHART_SIZE = 250;
 
@@ -102,12 +119,12 @@ export const ActualCaseBasicAnalytics: React.FC<
     }
   }, [frequency]);
 
-  const parsedPosts = React.useMemo(
-    (): LineChartData =>
-      inputPostsCounts
-        .filter(({ sn }) => activeFiltersList[0] === sn)
+  const { mainParsedPostsList, additionalParsedPostsList } = React.useMemo(
+    () => ({
+      mainParsedPostsList: inputPostsCounts
         .filter(
-          ({ date }) =>
+          ({ sn, date }) =>
+            activeFiltersList[0] === sn &&
             currentFrequency.max >= new Date(date.toISO()) &&
             new Date(date.toISO()) >= currentFrequency.min
         )
@@ -115,52 +132,82 @@ export const ActualCaseBasicAnalytics: React.FC<
           date: new Date(date.setLocale("ru").toISO()),
           value: count,
         })),
-    [activeFiltersList, currentFrequency.max, currentFrequency.min]
-  );
-
-  const uniqueUsers = React.useMemo(
-    (): LineChartData =>
-      inputUniqueUsers
-        .filter(({ sn }) => activeFiltersList[0] === sn)
+      additionalParsedPostsList: inputPostsCounts
         .filter(
-          ({ date }) =>
-            currentFrequency.max >= date && date >= currentFrequency.min
-        ),
+          ({ sn, date }) =>
+            activeFiltersList[1] === sn &&
+            currentFrequency.max >= new Date(date.toISO()) &&
+            new Date(date.toISO()) >= currentFrequency.min
+        )
+        .map(({ date, count }) => ({
+          date: new Date(date.setLocale("ru").toISO()),
+          value: count,
+        })),
+    }),
     [activeFiltersList, currentFrequency.max, currentFrequency.min]
   );
 
-  const initiatorsAndInvolvedCounts = React.useMemo(
-    () =>
-      inputInitiatorsAndInvolvedCounts
-        ?.filter(({ sn }) => activeFiltersList[0] === sn)
+  const { mainUniqueUsersList, additionalUniqueUsersList } = React.useMemo(
+    () => ({
+      mainUniqueUsersList: inputUniqueUsers.filter(
+        ({ sn, date }) =>
+          activeFiltersList[0] === sn &&
+          currentFrequency.max >= date &&
+          date >= currentFrequency.min
+      ),
+      additionalUniqueUsersList: inputUniqueUsers.filter(
+        ({ sn, date }) =>
+          activeFiltersList[1] === sn &&
+          currentFrequency.max >= date &&
+          date >= currentFrequency.min
+      ),
+    }),
+    [activeFiltersList, currentFrequency.max, currentFrequency.min]
+  );
+
+  const {
+    mainInitiatorsAndInvolvedCounts,
+    additionalInitiatorsAndInvolvedCounts,
+  } = React.useMemo(
+    () => ({
+      mainInitiatorsAndInvolvedCounts: inputInitiatorsAndInvolvedCounts
         ?.filter(
-          ({ date }) =>
-            currentFrequency.max >= date && date >= currentFrequency.min
+          ({ sn, date }) =>
+            activeFiltersList[0] === sn &&
+            currentFrequency.max >= date &&
+            date >= currentFrequency.min
         )
         .slice(-1)[0] ?? { initiators: 0, outreach: 0 },
+      additionalInitiatorsAndInvolvedCounts: inputInitiatorsAndInvolvedCounts
+        ?.filter(
+          ({ sn, date }) =>
+            activeFiltersList[1] === sn &&
+            currentFrequency.max >= date &&
+            date >= currentFrequency.min
+        )
+        .slice(-1)[0] ?? { initiators: 0, outreach: 0 },
+    }),
     [activeFiltersList, currentFrequency.max, currentFrequency.min]
   );
 
-  const ratios = React.useMemo(
-    () => ({
-      initiators:
-        _.round(
-          (initiatorsAndInvolvedCounts.initiators * 100) /
-            (initiatorsAndInvolvedCounts.initiators +
-              initiatorsAndInvolvedCounts.outreach),
-          0
-        ) + "%",
-      outreach:
-        _.round(
-          (initiatorsAndInvolvedCounts.outreach * 100) /
-            (initiatorsAndInvolvedCounts.initiators +
-              initiatorsAndInvolvedCounts.outreach),
-          0
-        ) + "%",
-    }),
+  const getRatio = React.useCallback(
+    (num: number, den: number) =>
+      activeFiltersList.length > 1
+        ? _.round(
+            (num * 100) /
+              (mainInitiatorsAndInvolvedCounts.initiators +
+                mainInitiatorsAndInvolvedCounts.outreach +
+                additionalInitiatorsAndInvolvedCounts.initiators +
+                additionalInitiatorsAndInvolvedCounts.outreach),
+            0
+          ) + "%"
+        : _.round((num * 100) / den, 0) + "%",
     [
-      initiatorsAndInvolvedCounts.initiators,
-      initiatorsAndInvolvedCounts.outreach,
+      activeFiltersList.length,
+      additionalInitiatorsAndInvolvedCounts.initiators,
+      additionalInitiatorsAndInvolvedCounts.outreach,
+      mainInitiatorsAndInvolvedCounts.initiators,
+      mainInitiatorsAndInvolvedCounts.outreach,
     ]
   );
 
@@ -170,6 +217,74 @@ export const ActualCaseBasicAnalytics: React.FC<
       max: currentFrequency.max,
     }),
     [currentFrequency.max, currentFrequency.min]
+  );
+
+  const { mainPieChartData, additionalPieChartData } = React.useMemo(
+    () => ({
+      mainPieChartData: [
+        {
+          name: `Инициаторы ${activeFiltersList[0]}:  ${
+            mainInitiatorsAndInvolvedCounts.initiators
+          } (${getRatio(
+            mainInitiatorsAndInvolvedCounts.initiators,
+            mainInitiatorsAndInvolvedCounts.initiators +
+              mainInitiatorsAndInvolvedCounts.outreach
+          )})`,
+          value: mainInitiatorsAndInvolvedCounts.initiators,
+          color: theme.palette.primary.dark,
+        },
+        {
+          name: `Привлеченная аудитория ${activeFiltersList[0]}:  ${
+            mainInitiatorsAndInvolvedCounts.outreach
+          } (${getRatio(
+            mainInitiatorsAndInvolvedCounts.outreach,
+            mainInitiatorsAndInvolvedCounts.initiators +
+              mainInitiatorsAndInvolvedCounts.outreach
+          )})`,
+          value: mainInitiatorsAndInvolvedCounts.outreach,
+          color: theme.palette.error.light,
+        },
+      ],
+      additionalPieChartData:
+        activeFiltersList.length > 1
+          ? [
+              {
+                name: `Инициаторы ${activeFiltersList[1]}: ${
+                  additionalInitiatorsAndInvolvedCounts.initiators
+                } (${getRatio(
+                  additionalInitiatorsAndInvolvedCounts.initiators,
+                  additionalInitiatorsAndInvolvedCounts.initiators +
+                    additionalInitiatorsAndInvolvedCounts.outreach
+                )})`,
+                value: additionalInitiatorsAndInvolvedCounts.initiators,
+                color: theme.palette.info.dark,
+              },
+              {
+                name: `Привлеченная аудитория ${activeFiltersList[1]}: ${
+                  additionalInitiatorsAndInvolvedCounts.outreach
+                } (${getRatio(
+                  additionalInitiatorsAndInvolvedCounts.initiators,
+                  additionalInitiatorsAndInvolvedCounts.initiators +
+                    additionalInitiatorsAndInvolvedCounts.outreach
+                )})`,
+                value: additionalInitiatorsAndInvolvedCounts.outreach,
+                color: theme.palette.warning.light,
+              },
+            ]
+          : [],
+    }),
+    [
+      activeFiltersList,
+      additionalInitiatorsAndInvolvedCounts.initiators,
+      additionalInitiatorsAndInvolvedCounts.outreach,
+      getRatio,
+      mainInitiatorsAndInvolvedCounts.initiators,
+      mainInitiatorsAndInvolvedCounts.outreach,
+      theme.palette.error.light,
+      theme.palette.info.dark,
+      theme.palette.primary.dark,
+      theme.palette.warning.light,
+    ]
   );
 
   return (
@@ -200,17 +315,45 @@ export const ActualCaseBasicAnalytics: React.FC<
         <Chart
           type="line"
           dateRange={chartDateRange}
-          chartData={parsedPosts}
+          chartData={mainParsedPostsList}
+          extraChartData={
+            activeFiltersList.length === 1 ? [] : additionalParsedPostsList
+          }
           height={290}
           loading={loading}
           xAxisName={"Частота"}
           yAxisName={"Количество публикаций"}
         />
+        <Box
+          display="flex"
+          flexDirection="column"
+          justifyContent="start"
+          alignItems="center"
+          mt={-4}
+        >
+          <Typography variant="subtitle5" css={exportCss}>
+            Export
+          </Typography>
+          <Avatar css={avatarCss}>
+            <IconButton
+              onClick={downloadPostsHandler(
+                activeFiltersList,
+                inputPostsCounts,
+                currentFrequency
+              )}
+            >
+              <Icon name="FileDownload" css={iconCss} />
+            </IconButton>
+          </Avatar>
+        </Box>
       </Box>
       <Box display="flex" justifyContent="center" alignItems="center">
         <Chart
           type="line"
-          chartData={uniqueUsers}
+          chartData={mainUniqueUsersList}
+          extraChartData={
+            activeFiltersList.length === 1 ? [] : additionalUniqueUsersList
+          }
           height={290}
           loading={loading}
           xAxisShowLabel={true}
@@ -218,24 +361,63 @@ export const ActualCaseBasicAnalytics: React.FC<
           xAxisName={"Частота"}
           yAxisName={"Уникальные пользователи"}
         />
+        <Box
+          display="flex"
+          flexDirection="column"
+          justifyContent="start"
+          alignItems="center"
+          mt={-4}
+        >
+          <Typography variant="subtitle5" css={exportCss}>
+            Export
+          </Typography>
+          <Avatar css={avatarCss}>
+            <IconButton
+              onClick={downloadUniqueHandler(
+                activeFiltersList,
+                mainUniqueUsersList,
+                additionalUniqueUsersList
+              )}
+            >
+              <Icon name="FileDownload" css={iconCss} />
+            </IconButton>
+          </Avatar>
+        </Box>
       </Box>
-      <Box sx={{ width: PIE_CHART_SIZE * 3.5, ml: 15, mt: -2 }}>
+      <Box
+        sx={{ width: PIE_CHART_SIZE * 3.5, ml: 15, mt: -2 }}
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+      >
         <Chart
           type="pie"
-          chartData={[
-            {
-              name: `Инициаторы: ${initiatorsAndInvolvedCounts.initiators} (${ratios.initiators})`,
-              value: initiatorsAndInvolvedCounts.initiators,
-              color: theme.palette.primary.dark,
-            },
-            {
-              name: `Привлеченная аудитория: ${initiatorsAndInvolvedCounts.outreach} (${ratios.outreach})`,
-              value: initiatorsAndInvolvedCounts.outreach,
-              color: theme.palette.error.light,
-            },
-          ]}
+          chartData={[...mainPieChartData, ...additionalPieChartData]}
           height={PIE_CHART_SIZE}
         />
+        <Box
+          display="flex"
+          flexDirection="column"
+          justifyContent="start"
+          alignItems="center"
+          mt={-4}
+        >
+          <Typography variant="subtitle5" css={exportCss}>
+            Export
+          </Typography>
+          <Avatar css={avatarCss}>
+            <IconButton
+              onClick={downloadDiagramHandler(
+                activeFiltersList,
+                mainInitiatorsAndInvolvedCounts,
+                additionalInitiatorsAndInvolvedCounts,
+                getRatio
+              )}
+            >
+              <Icon name="FileDownload" css={iconCss} />
+            </IconButton>
+          </Avatar>
+        </Box>
       </Box>
     </Box>
   );
