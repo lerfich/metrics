@@ -30,19 +30,21 @@ export const ActualCaseContentSpreadsheet = ({
     [tweets]
   );
 
+  console.log(tweets, "tweets");
+
   const downloadHandler = React.useCallback((toolbarData: TweetsType) => {
     downloadCsv(
       formatDataToCsv({
         type: "object-array",
         data: toolbarData.map(({ id, date, text, author }: TweetsType[0]) => ({
-          id: id ?? "Tweet ID не найден",
-          date: date?.toFormat("DD") ?? "Дата не найдена",
-          text: text ?? "Текст поста не найден",
-          author: author ?? "Автор не найден",
+          id,
+          date: date?.toFormat("DD"),
+          text,
+          author,
         })),
-        titles: ["Tweet ID", "Дата", "Текст поста", "Прогресс"],
+        titles: ["ID", "Date", "Text", "Author"],
       }),
-      "Данные исследования"
+      "Posts Table"
     );
   }, []);
 

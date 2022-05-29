@@ -52,6 +52,18 @@ export type SemanticWordsListType = SemanticWordType[];
 
 export type DatabaseInfluencersType = InfluencerType[];
 
+export type TopicAnalysis = {
+  id: number;
+  title: string;
+  words: {
+    text: string;
+    frequency: number;
+    otherFrequency: number;
+  }[];
+};
+
+export type TopicAnalysisList = TopicAnalysis[];
+
 export type DatabaseContextValue = {
   database: DatabaseType[];
   setDatabase: React.Dispatch<React.SetStateAction<DatabaseType[]>>;
@@ -69,4 +81,6 @@ export type DatabaseContextValue = {
   setNegativeSemanticWords: React.Dispatch<
     React.SetStateAction<SemanticWordsListType>
   >;
+  topicAnalysis: TopicAnalysisList;
+  setTopicAnalysis: React.Dispatch<React.SetStateAction<TopicAnalysisList>>;
 };

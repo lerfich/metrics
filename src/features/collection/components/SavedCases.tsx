@@ -61,6 +61,12 @@ const SavedCases = () => {
             label: "error",
           };
         }
+        case CASE_STATUSES.waiting: {
+          return {
+            css: { backgroundColor: theme.palette.info.dark },
+            label: "waiting to start",
+          };
+        }
 
         default: {
           return {
@@ -164,7 +170,8 @@ const SavedCases = () => {
                 css={progressCss}
               />
               {status !== CASE_STATUSES.error &&
-                status !== CASE_STATUSES.ready && (
+                status !== CASE_STATUSES.ready &&
+                status !== CASE_STATUSES.waiting && (
                   <Box ml={1.5}>
                     <CircularProgress variant="indeterminate" />
                   </Box>
