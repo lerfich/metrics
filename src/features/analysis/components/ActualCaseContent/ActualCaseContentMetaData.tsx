@@ -97,7 +97,7 @@ export const ActualCaseContentMetaData: React.FC<ActualCaseContentInput> = ({
               color="secondary"
               onClick={onDownloadMetadata}
             >
-              Загрузить метаданные
+              EXPORT METADATA
             </Button>
           </Box>
         </Box>

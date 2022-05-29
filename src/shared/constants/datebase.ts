@@ -3,6 +3,39 @@ import { LineChartData, LineChartSNData } from "shared/components/ui";
 import { SOCIAL_NETWORKS } from "./social";
 import { CASE_STATUSES } from "./status";
 
+export const TOPICS_ANALYSIS_LIST = [
+  {
+    id: 12323,
+    title: "cars",
+    words: [
+      { text: "car", frequency: 20, otherFrequency: 10 },
+      { text: "wash", frequency: 51, otherFrequency: 39 },
+      { text: "drive", frequency: 77, otherFrequency: 88 },
+      { text: "learn", frequency: 12, otherFrequency: 150 },
+    ],
+  },
+  {
+    id: 37733,
+    title: "e-sport",
+    words: [
+      { text: "computer games", frequency: 281, otherFrequency: 95 },
+      { text: "screen", frequency: 512, otherFrequency: 2 },
+      { text: "miracle", frequency: 770, otherFrequency: 1 },
+      { text: "s1mple", frequency: 921, otherFrequency: 55 },
+    ],
+  },
+  {
+    id: 93983,
+    title: "basketball",
+    words: [
+      { text: "LeBron", frequency: 120, otherFrequency: 9 },
+      { text: "Curry", frequency: 151, otherFrequency: 25 },
+      { text: "Miami Heat", frequency: 717, otherFrequency: 39 },
+      { text: "Celtic", frequency: 112, otherFrequency: 35 },
+    ],
+  },
+];
+
 export const TOP_INFLUENCERS = [
   {
     userId: 393883,
@@ -225,7 +258,7 @@ export const DATABASE = [
     tags: ["#playfootball", "#basketball", "#MiamiHeat"],
     tweets: [
       {
-        id: "3sdai3i_t.,i",
+        id: "3sdai3i_ti",
         text: "Hey guys",
         author: "Kyrie Irving",
         date: DateTime.now().minus({ years: 7, month: 11 }),
@@ -290,6 +323,46 @@ export const DATABASE = [
     id: "99",
     title: "Amazing case..!",
     status: CASE_STATUSES.error,
+    progress: 0,
+    dateFilter: {
+      startDate: DateTime.now().minus({ months: 3, days: 1 }),
+      endDate: DateTime.now().plus({ years: 2, months: 7 }),
+    },
+    filters: ["instagram", "facebook"],
+    tags: ["#playfootball", "#basketball", "#MiamiHeat"],
+    tweets: [
+      {
+        id: "3sdai3i_twi",
+        text: "That was nice event!",
+        author: "Nikita Papenkov",
+        date: DateTime.now().minus({ years: 7, month: 11 }),
+      },
+      {
+        id: "3sdai3_dsad",
+        text: "Im best player of US.",
+        author: "Demar DeRozan",
+        date: DateTime.now().minus({ years: 1, month: 1 }),
+      },
+      {
+        id: "3sdai3i_tdwwi",
+        text: "Nevermind",
+        author: "John Wall",
+        date: DateTime.now().minus({ years: 3, month: 9 }),
+      },
+    ],
+    tweetsCount: 3,
+    generalStats: {
+      likes: 10,
+      comments: 25,
+      posts: 3,
+      reposts: 15,
+      general_coverage: 87,
+    },
+  },
+  {
+    id: "354",
+    title: "Another case",
+    status: CASE_STATUSES.waiting,
     progress: 0,
     dateFilter: {
       startDate: DateTime.now().minus({ months: 3, days: 1 }),

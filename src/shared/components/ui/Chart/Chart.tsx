@@ -7,6 +7,7 @@ import { LineChart, BarChart, PieChart, ScatterChart } from "echarts/charts";
 import { GridComponent } from "echarts/components";
 import type { EChartsOption } from "echarts";
 import _ from "lodash";
+import { LegendComponent } from "echarts/components";
 
 import type { SxProp } from "shared/types/styles";
 import { Preloader } from "shared/components/ui";
@@ -25,6 +26,7 @@ echarts.use([
   PieChart,
   GridComponent,
   ScatterChart,
+  LegendComponent,
 ]);
 
 const boxStyles: SxProp = {
@@ -77,6 +79,7 @@ type ChartProps = {
   xAxisShowLabel?: boolean;
   color?: string;
   height?: number;
+  width?: number;
   overrideOptions?: EChartsOption;
   dateRange?: ChartDateRange;
   xAxisName?: string;
@@ -84,6 +87,8 @@ type ChartProps = {
   loading?: boolean;
   smooth?: boolean;
   categoryName?: string;
+  mainLabelColor?: any;
+  otherLabelColor?: any;
 };
 
 export const Chart: React.FC<ChartProps & ChartPropsVariants> = ({
@@ -95,6 +100,7 @@ export const Chart: React.FC<ChartProps & ChartPropsVariants> = ({
   additionalChartData,
   color = "#0089ff",
   height = 250,
+  width,
   overrideOptions,
   dateRange,
   xAxisName = "",
@@ -102,6 +108,8 @@ export const Chart: React.FC<ChartProps & ChartPropsVariants> = ({
   loading = false,
   smooth = false,
   categoryName = "category",
+  mainLabelColor,
+  otherLabelColor,
 }) => {
   const theme = useTheme();
   const chartOptions = React.useMemo((): EChartsOption | undefined => {
@@ -220,6 +228,12 @@ export const Chart: React.FC<ChartProps & ChartPropsVariants> = ({
             interval: "auto",
           },
         },
+        grid: {
+          left: "3%",
+          right: "4%",
+          bottom: "3%",
+          containLabel: true,
+        },
         yAxis: {
           name: yAxisName,
           nameTextStyle: {
@@ -227,21 +241,47 @@ export const Chart: React.FC<ChartProps & ChartPropsVariants> = ({
             fontSize: 14,
           },
         },
-        series: {
-          type,
-          color,
-          showBackground: false,
-          label: {
-            show: true,
-            color,
-            position: "top",
+        legend: {},
+        series: [
+          {
+            type,
+            color: mainLabelColor,
+            stack: "total",
+            emphasis: {
+              focus: "series",
+            },
+            showBackground: false,
+            label: {
+              show: true,
+              color: mainLabelColor,
+              position: "left",
+            },
+            animation: false,
+            data: chartData.map((point) => ({
+              name: categoryName,
+              value: [_.capitalize(point.category), point.value as number],
+            })),
           },
-          animation: false,
-          data: chartData.map((point) => ({
-            name: categoryName,
-            value: [_.capitalize(point.category), point.value as number],
-          })),
-        },
+          {
+            type,
+            color: otherLabelColor,
+            stack: "total",
+            emphasis: {
+              focus: "series",
+            },
+            showBackground: false,
+            label: {
+              show: true,
+              color: otherLabelColor,
+              position: "left",
+            },
+            animation: false,
+            data: extraChartData?.map((point) => ({
+              name: categoryName,
+              value: [_.capitalize(point.category), point.value as number],
+            })),
+          },
+        ],
       };
     }
 
@@ -284,7 +324,6 @@ export const Chart: React.FC<ChartProps & ChartPropsVariants> = ({
     }
 
     if (type === "customBar") {
-      console.log("looks custom");
       dataOptions = chartData;
     }
 
@@ -308,6 +347,7 @@ export const Chart: React.FC<ChartProps & ChartPropsVariants> = ({
     };
   }, [
     additionalChartData,
+    categoryName,
     chartData,
     color,
     dateRange,
@@ -325,7 +365,7 @@ export const Chart: React.FC<ChartProps & ChartPropsVariants> = ({
 
   if (loading) {
     return (
-      <Box display="flex" height={height} alignItems="center">
+      <Box display="flex" height={height} width={width} alignItems="center">
         <Preloader />
       </Box>
     );
@@ -333,14 +373,14 @@ export const Chart: React.FC<ChartProps & ChartPropsVariants> = ({
 
   if (_.isNil(chartOptions)) {
     return (
-      <Box display="flex" height={height} alignItems="center">
+      <Box display="flex" height={height} width={width} alignItems="center">
         <Typography>Wrong chart data!</Typography>
       </Box>
     );
   }
 
   return (
-    <Box height={height} sx={boxStyles}>
+    <Box height={height} minWidth={width} sx={boxStyles}>
       <ReactEChartsCore
         echarts={echarts}
         option={chartOptions}

@@ -3,4 +3,5 @@ export const CASE_STATUSES = {
   sentiment: "sentiment",
   ready: "analysis",
   error: "error",
+  waiting: "waiting",
 };

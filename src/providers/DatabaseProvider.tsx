@@ -9,6 +9,7 @@ export type DatabaseContextProps = {
   defaultPositiveSemanticWordsValue?: DatabaseContextValue["positiveSemanticWords"];
   defaultNegativeSemanticWordsValue?: DatabaseContextValue["negativeSemanticWords"];
   defaultNeutralSemanticWordsValue?: DatabaseContextValue["neutralSemanticWords"];
+  defaultTopicAnalysis?: DatabaseContextValue["topicAnalysis"];
 };
 
 export const DatabaseProvider = ({
@@ -18,6 +19,7 @@ export const DatabaseProvider = ({
   defaultPositiveSemanticWordsValue = DEFAULT_CONTEXT_VALUE.positiveSemanticWords,
   defaultNegativeSemanticWordsValue = DEFAULT_CONTEXT_VALUE.negativeSemanticWords,
   defaultNeutralSemanticWordsValue = DEFAULT_CONTEXT_VALUE.neutralSemanticWords,
+  defaultTopicAnalysis = DEFAULT_CONTEXT_VALUE.topicAnalysis,
 }: DatabaseContextProps) => {
   const [database, setDatabase] = React.useState(defaultDatabaseValue);
   const [influencers, setInfluencers] = React.useState(defaultInfluencersValue);
@@ -30,8 +32,8 @@ export const DatabaseProvider = ({
   const [neutralSemanticWords, setNeutralSemanticWords] = React.useState(
     defaultNeutralSemanticWordsValue
   );
-
-  console.log(DEFAULT_CONTEXT_VALUE.positiveSemanticWords, "ss");
+  const [topicAnalysis, setTopicAnalysis] =
+    React.useState(defaultTopicAnalysis);
 
   return (
     <DatabaseContext.Provider
@@ -46,6 +48,8 @@ export const DatabaseProvider = ({
         setNegativeSemanticWords,
         neutralSemanticWords,
         setNeutralSemanticWords,
+        topicAnalysis,
+        setTopicAnalysis,
       }}
     >
       {children}

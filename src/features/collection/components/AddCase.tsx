@@ -6,6 +6,11 @@ import React from "react";
 import { FormError } from "../../../shared/components/form";
 import { Icon24LogoVk } from "@vkontakte/icons";
 import CIcon from "@coreui/icons-react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faFacebook,
+  faOdnoklassniki,
+} from "@fortawesome/free-brands-svg-icons";
 import {
   Button,
   FormCheckbox,
@@ -16,6 +21,7 @@ import {
   Tooltip,
   Typography,
 } from "../../../shared/components/ui";
+import { SocialIcon } from "react-social-icons";
 import { Form } from "../../../shared/components/ui/Form";
 import { SOCIAL_NETWORKS } from "../../../shared/constants/social";
 import { required } from "../../../shared/utils/form";
@@ -27,6 +33,7 @@ import {
   SNACK_TYPES,
 } from "shared/components/ui/SnackMessage";
 import { random } from "lodash";
+import { CASE_STATUSES } from "shared/constants/status";
 
 const socialIconCss = (color: string) => css`
   color: ${color};
@@ -169,15 +176,55 @@ const AddCase = () => {
     [chipsArray]
   );
 
-  const onSaveCase = React.useCallback(() => {}, []);
+  const onSaveCase = React.useCallback(
+    (values) => () => {
+      const newCase = {
+        id: generateAccessCode(),
+        title: values?.title,
+        status: CASE_STATUSES.crawling,
+        progress: (random(10) * 10) / 100,
+        dateFilter: {
+          startDate: DateTime.now(),
+          endDate: DateTime.now(),
+        },
+        filters:
+          Object.keys(values?.social ?? {}).map((label) => `${label}`) ?? [],
+        tags: chipsArray,
+        tweets: [
+          {
+            id: generateAccessCode(),
+            text: "good text",
+            author: "me",
+            date: DateTime.now(),
+          },
+        ],
+        tweetsCount: 33,
+        generalStats: {
+          likes: 44,
+          comments: 10,
+          posts: 15,
+          reposts: 99,
+          general_coverage: 1048,
+        },
+      };
+      setDatabase([...database, newCase]);
+      enqueueSnackbar(
+        "Success. Case has been created. Check it out and start the crawling on list of cases page.",
+        {
+          autoHideDuration: 3000,
+          content: createSnackMessage(SNACK_TYPES.error),
+        }
+      );
+    },
+    [chipsArray, database, enqueueSnackbar, setDatabase]
+  );
 
-  React.useEffect(() => console.log(database.length, "db length"), [database]);
   const onSubmit = React.useCallback(
     (formData: FormData) => {
       const newCase = {
         id: generateAccessCode(),
         title: formData?.title,
-        status: "pending",
+        status: CASE_STATUSES.crawling,
         progress: (random(10) * 10) / 100,
         dateFilter: {
           startDate: DateTime.now(),
@@ -204,10 +251,13 @@ const AddCase = () => {
         },
       };
       setDatabase([...database, newCase]);
-      enqueueSnackbar("Выполнено. Новый кейс был добавлен к общему списку", {
-        autoHideDuration: 3000,
-        content: createSnackMessage(SNACK_TYPES.error),
-      });
+      enqueueSnackbar(
+        "Success. Case has been created and crawling started. Check it out on list of cases page.",
+        {
+          autoHideDuration: 3000,
+          content: createSnackMessage(SNACK_TYPES.error),
+        }
+      );
     },
     [chipsArray, database, enqueueSnackbar, setDatabase]
   );
@@ -367,28 +417,27 @@ const AddCase = () => {
                 gridTemplateColumns="2fr 5fr"
                 alignItems="center"
               >
-                <Box
-                  display="flex"
-                  justifyContent="start"
-                  // alignItems="center"
-                  // mr={1}
-                  mt={1.5}
-                >
+                <Box display="flex" justifyContent="start" mt={1.5}>
                   <>
-                    {network !== (SOCIAL_NETWORKS[3] || SOCIAL_NETWORKS[5]) ? (
+                    {network === SOCIAL_NETWORKS[3] ? (
+                      <Icon24LogoVk css={socialIconCss(network.color)} />
+                    ) : network === SOCIAL_NETWORKS[5] ? (
+                      <FontAwesomeIcon
+                        icon={faOdnoklassniki}
+                        color="#ed812b"
+                        style={{ fontSize: 20, marginTop: 3, marginRight: 2 }}
+                      />
+                    ) : (
                       <Icon
                         size="small"
                         name={network.icon}
                         css={socialIconCss(network.color)}
                       />
-                    ) : network === SOCIAL_NETWORKS[3] ? (
-                      <Icon24LogoVk css={socialIconCss(network.color)} />
-                    ) : (
-                      <CIcon icon="cilPencil" />
                     )}
                   </>
                   <Typography variant="body1">{network.label}</Typography>
                 </Box>
+
                 <FormCheckbox
                   fieldProps={{ name: `social.${network.shortName}` }}
                   checkboxProps={{
@@ -408,7 +457,7 @@ const AddCase = () => {
                 loading={isSubmitting}
                 size="medium"
                 variant="outlined"
-                onClick={onSaveCase}
+                onClick={onSaveCase(values)}
               >
                 Save
               </Button>

@@ -6,6 +6,7 @@ import {
   TOP_NEGATIVE_SEMANTIC_ANALYSIS_WORDS,
   TOP_NEUTRAL_SEMANTIC_ANALYSIS_WORDS,
   TOP_POSITIVE_SEMANTIC_ANALYSIS_WORDS,
+  TOPICS_ANALYSIS_LIST,
 } from "../shared/constants";
 import { DatabaseContextValue } from "./types";
 
@@ -20,6 +21,8 @@ export const DEFAULT_CONTEXT_VALUE: DatabaseContextValue = {
   setNegativeSemanticWords: () => {},
   neutralSemanticWords: TOP_NEUTRAL_SEMANTIC_ANALYSIS_WORDS,
   setNeutralSemanticWords: () => {},
+  topicAnalysis: TOPICS_ANALYSIS_LIST,
+  setTopicAnalysis: () => {},
 };
 
 export const DatabaseContext = React.createContext<DatabaseContextValue>(

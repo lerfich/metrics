@@ -103,11 +103,6 @@ export const ActualCaseSemanticAnalytics = () => {
     [compareWordsImportance, sortType, switchCountColor, switchSpreadsheetData]
   );
 
-  React.useEffect(
-    () => console.log("u showing that..", wordsData),
-    [wordsData]
-  );
-
   const downloadHandler = React.useCallback(
     (toolbarData: SemanticWordType[]) => {
       downloadCsv(
@@ -155,7 +150,7 @@ export const ActualCaseSemanticAnalytics = () => {
       </Modal>
       <Box display="flex" justifyContent="center" alignItems="center">
         <Typography variant="subtitle2" css={topCss}>
-          Semantic Analysis TOP
+          Sentiment Analysis TOP
         </Typography>
         <Box display="grid" gridTemplateColumns="auto" ml={1} mt={0}>
           <Select
