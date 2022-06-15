@@ -22,24 +22,24 @@ export const ActualCaseContentMetaData: React.FC<ActualCaseContentInput> = ({
         type: "object-array",
         data: [
           {
-            likes: generalStats?.likes ?? "Количество лайков не найдено",
+            likes: generalStats?.likes ?? "No likes found",
             coments:
-              generalStats?.comments ?? "Количество комментариев не найдено",
-            posts: generalStats?.posts ?? "Количество постов не найдено",
-            reposts: generalStats?.reposts ?? "Количество репостов не найдено",
+              generalStats?.comments ?? "No comments found",
+            posts: generalStats?.posts ?? "No posts found",
+            reposts: generalStats?.reposts ?? "No reposts found",
             general_coverate:
-              generalStats?.general_coverage ?? "Общий охват не найден",
+              generalStats?.general_coverage ?? "Total reach not found",
           },
         ],
         titles: [
-          "Количество лайков",
-          "Количество комментариев",
-          "Количество постов",
-          "Количество репостов",
-          "Общий охват",
+          "Number of likes",
+          "Number of comments",
+          "Number of posts",
+          "Number of reposts",
+          "General coverage",
         ],
       }),
-      "Метаданные исследования"
+      "Research metadata"
     );
   }, [
     generalStats?.comments,
@@ -60,7 +60,7 @@ export const ActualCaseContentMetaData: React.FC<ActualCaseContentInput> = ({
       py={2}
       px={3}
     >
-      <Typography variant="subtitle4">Метаданные: </Typography>
+      <Typography variant="subtitle4">Metadata: </Typography>
       <Box
         display="grid"
         gridTemplateColumns="1fr 1fr 1fr"

@@ -132,13 +132,13 @@ const SavedCases = () => {
       formatDataToCsv({
         type: "object-array",
         data: toolbarData.map(({ title, progress, status }: any) => ({
-          title: title ?? "Название не найдено",
-          progress: progress ?? "Прогресс не найден",
-          status: status ?? "Статус не найден",
+          title: title ?? "Title not found",
+          progress: progress ?? "Progress not found",
+          status: status ?? "Status not found",
         })),
-        titles: ["Название", "Прогресс", "Статус"],
+        titles: ["Title", "Progress", "Status"],
       }),
-      "Сохраненные кейсы"
+      "Saved cases"
     );
   }, []);
 

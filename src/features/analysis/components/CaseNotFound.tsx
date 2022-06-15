@@ -35,7 +35,7 @@ export const CaseNotFound: React.FC = () => {
             variant="subtitle5"
             onClick={onDetailsClick}
           >
-            Мои задания
+            Tasks
           </Typography>
         </Button>
       </Box>

@@ -281,7 +281,7 @@ const AddCase = () => {
           <FormTextField
             inputProps={{
               color: "primary",
-              label: "Название Кейса",
+              label: "Case title",
               variant: "outlined",
             }}
             fieldProps={{ name: "title", validate: required }}
@@ -289,7 +289,7 @@ const AddCase = () => {
           <FormTextField
             inputProps={{
               color: "primary",
-              label: "Описание Кейса",
+              label: "Case description",
               multiline: true,
               rows: "7",
               rowsMax: "7",
@@ -334,8 +334,8 @@ const AddCase = () => {
                     <TextField
                       {...params}
                       css={membersInputCss}
-                      label="ТЭГИ"
-                      placeholder="Напишите тег"
+                      label="Tags"
+                      placeholder="Write tag"
                       variant="outlined"
                       onChange={onChangeInputText}
                       value={inputText}
@@ -348,7 +348,7 @@ const AddCase = () => {
             <Tooltip
               title={
                 <Typography variant="body2">
-                  Ключевое слово или ключевая фраза не больше двух слов
+                  Keyword or key phrase, no more than two words
                 </Typography>
               }
               placement="top"
@@ -363,7 +363,7 @@ const AddCase = () => {
               justifyContent="end"
               mt={2}
             >
-              <Typography> Выбрите дату начала:</Typography>
+              <Typography> Select start date:</Typography>
               <FormKeyboardDatePicker
                 datePickerProps={{
                   format: "dd MMM yyyy",
@@ -389,7 +389,7 @@ const AddCase = () => {
               mt={2}
               ml={3}
             >
-              <Typography variant="body1">Выбрите дату окончания:</Typography>
+              <Typography variant="body1">Select end date:</Typography>
               <FormKeyboardDatePicker
                 datePickerProps={{
                   format: "dd MMM yyyy",

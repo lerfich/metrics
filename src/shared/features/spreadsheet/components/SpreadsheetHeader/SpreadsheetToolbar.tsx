@@ -73,7 +73,7 @@ export const SpreadsheetToolbar: React.FC<SpreadsheetToolbarProps> = ({
       <TableRow>
         {toolbarOptions?.showTotalCount && (
           <TableCell css={totalCountCss} align="center">
-            Записей найдено: {totalCount}
+            Records found: {totalCount}
           </TableCell>
         )}
         {toolbarHeader && (

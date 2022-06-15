@@ -129,7 +129,7 @@ export const ActualCaseBasicAnalytics: React.FC<
             new Date(date.toISO()) >= currentFrequency.min
         )
         .map(({ date, count }) => ({
-          date: new Date(date.setLocale("ru").toISO()),
+          date: new Date(date.setLocale("eng").toISO()),
           value: count,
         })),
       additionalParsedPostsList: inputPostsCounts
@@ -140,7 +140,7 @@ export const ActualCaseBasicAnalytics: React.FC<
             new Date(date.toISO()) >= currentFrequency.min
         )
         .map(({ date, count }) => ({
-          date: new Date(date.setLocale("ru").toISO()),
+          date: new Date(date.setLocale("eng").toISO()),
           value: count,
         })),
     }),
@@ -223,7 +223,7 @@ export const ActualCaseBasicAnalytics: React.FC<
     () => ({
       mainPieChartData: [
         {
-          name: `Инициаторы ${activeFiltersList[0]}:  ${
+          name: `Initiators ${activeFiltersList[0]}:  ${
             mainInitiatorsAndInvolvedCounts.initiators
           } (${getRatio(
             mainInitiatorsAndInvolvedCounts.initiators,
@@ -234,7 +234,7 @@ export const ActualCaseBasicAnalytics: React.FC<
           color: theme.palette.primary.dark,
         },
         {
-          name: `Привлеченная аудитория ${activeFiltersList[0]}:  ${
+          name: `Attracted audience ${activeFiltersList[0]}:  ${
             mainInitiatorsAndInvolvedCounts.outreach
           } (${getRatio(
             mainInitiatorsAndInvolvedCounts.outreach,
@@ -249,7 +249,7 @@ export const ActualCaseBasicAnalytics: React.FC<
         activeFiltersList.length > 1
           ? [
               {
-                name: `Инициаторы ${activeFiltersList[1]}: ${
+                name: `Initiators ${activeFiltersList[1]}: ${
                   additionalInitiatorsAndInvolvedCounts.initiators
                 } (${getRatio(
                   additionalInitiatorsAndInvolvedCounts.initiators,
@@ -260,7 +260,7 @@ export const ActualCaseBasicAnalytics: React.FC<
                 color: theme.palette.info.dark,
               },
               {
-                name: `Привлеченная аудитория ${activeFiltersList[1]}: ${
+                name: `Attracted audience ${activeFiltersList[1]}: ${
                   additionalInitiatorsAndInvolvedCounts.outreach
                 } (${getRatio(
                   additionalInitiatorsAndInvolvedCounts.initiators,
@@ -292,7 +292,7 @@ export const ActualCaseBasicAnalytics: React.FC<
       <Box display="grid" mb={1} mt={-3} px={3} gridTemplateColumns="auto">
         <Select
           variant="outlined"
-          label="Выбрать частоту"
+          label="Select frequency"
           value={frequency}
           onChange={onChangeFrequency}
           size="small"
@@ -321,8 +321,8 @@ export const ActualCaseBasicAnalytics: React.FC<
           }
           height={290}
           loading={loading}
-          xAxisName={"Частота"}
-          yAxisName={"Количество публикаций"}
+          xAxisName={"Frequency"}
+          yAxisName={"Number of publications"}
         />
         <Box
           display="flex"
@@ -358,8 +358,8 @@ export const ActualCaseBasicAnalytics: React.FC<
           loading={loading}
           xAxisShowLabel={true}
           dateRange={chartDateRange}
-          xAxisName={"Частота"}
-          yAxisName={"Уникальные пользователи"}
+          xAxisName={"Frequency"}
+          yAxisName={"Unique users"}
         />
         <Box
           display="flex"

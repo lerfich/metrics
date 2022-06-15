@@ -9,17 +9,17 @@ export const ActualCaseSpreadsheetHeadlines = [
   },
   {
     name: "user",
-    label: "Пользователь",
+    label: "User",
     id: "user",
   },
   {
     name: "date",
-    label: "Дата",
+    label: "Date",
     id: "date",
   },
   {
     name: "text",
-    label: "Сообщение",
+    label: "Message",
     id: "text",
     // sortPath: (order: SortOrder) => ({
     //   userPreferences: { phoneNumber: order },

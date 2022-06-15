@@ -6,7 +6,7 @@ import { Typography } from "shared/components/ui";
 export const ActualCaseContentFilters = () => {
   return (
     <Box ml={1}>
-      <Typography>Дополнительные фильтры: </Typography>
+      <Typography>Additional filters: </Typography>
     </Box>
   );
 };

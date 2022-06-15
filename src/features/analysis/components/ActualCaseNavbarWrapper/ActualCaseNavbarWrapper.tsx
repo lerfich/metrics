@@ -26,22 +26,22 @@ export const ActualCaseNavbarWrapper: React.FC<ActualCaseContentInput> = ({
   const { id } = useParams<{ id: string }>();
   const MAIN_SIDEBAR_LIST_DATA = [
     {
-      title: "Данные",
+      title: "Data",
       icon: "Feed",
       route: buildUrl(APP_URL.actualCase, { pathParams: { id } }),
     },
     {
-      title: "Инфлюенсеры",
+      title: "Influencers",
       icon: "People",
       route: buildUrl(APP_URL.influencers, { pathParams: { id } }),
     },
     {
-      title: "Базовый анализ",
+      title: "Basic analysis",
       icon: "BarChart",
       route: buildUrl(APP_URL.actualCaseBasicAnalytics, { pathParams: { id } }),
     },
     {
-      title: "Продвинутый анализ",
+      title: "Advanced analysis",
       icon: "Addchart",
       route: buildUrl(APP_URL.actualCaseAdvancedAnalytics, {
         pathParams: { id },

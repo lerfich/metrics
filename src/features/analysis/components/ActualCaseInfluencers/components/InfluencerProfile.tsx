@@ -100,7 +100,7 @@ export const InfluencerProfile = ({
         <Box display="grid" gridTemplateRows="auto" alignItems="center">
           <Box ml={1} display="grid" gridTemplateColumns="7fr 1fr">
             <Typography css={userClassCSS} variant="body1">
-              Количество постов:
+              Number of posts:
             </Typography>
             <Chip
               style={{
@@ -116,7 +116,7 @@ export const InfluencerProfile = ({
           </Box>
           <Box ml={1} display="grid" gridTemplateColumns="7fr 1fr">
             <Typography css={userClassCSS} variant="body1">
-              Количество лайков:
+              Number of likes:
             </Typography>
             <Chip
               style={{
@@ -132,7 +132,7 @@ export const InfluencerProfile = ({
           </Box>
           <Box ml={1} display="grid" gridTemplateColumns="7fr 1fr">
             <Typography css={userClassCSS} variant="body1">
-              Количество репостов:
+              Number of reposts:
             </Typography>
             <Chip
               style={{
@@ -148,7 +148,7 @@ export const InfluencerProfile = ({
           </Box>
           <Box ml={1} display="grid" gridTemplateColumns="7fr 1fr">
             <Typography css={userClassCSS} variant="body1">
-              Количество вовлеченных пользователей:
+              Number of users involved:
             </Typography>
             <Chip
               style={{
@@ -186,11 +186,11 @@ export const InfluencerProfile = ({
               size="small"
               onClick={onViewProfileClick}
             >
-              Перейти на профиль
+              Go to profile
             </Button>
           </Box>
           <Button css={cancelButtonCSS} size="small" onClick={onModalClose}>
-            Отменить
+            Cancel
           </Button>
         </Box>
       </Box>

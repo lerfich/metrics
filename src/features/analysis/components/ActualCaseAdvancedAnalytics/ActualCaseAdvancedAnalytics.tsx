@@ -253,7 +253,7 @@ export const ActualCaseAdvancedAnalytics = ({
       <Box display="grid" gridTemplateColumns="auto">
         <Select
           variant="outlined"
-          label="Выбрать частоту"
+          label="Select frequency"
           value={frequency}
           onChange={onChangeFrequency}
           size="small"

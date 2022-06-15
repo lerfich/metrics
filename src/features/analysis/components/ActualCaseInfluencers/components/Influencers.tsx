@@ -56,19 +56,19 @@ export const Influencers = () => {
   const switchCountType = React.useMemo(() => {
     switch (sortType) {
       case Object.keys(SORT_TYPES)[0]: {
-        return "Лайков";
+        return "Likes";
       }
       case Object.keys(SORT_TYPES)[1]: {
-        return "Постов";
+        return "Posts";
       }
       case Object.keys(SORT_TYPES)[2]: {
-        return "Репостов";
+        return "Reposts";
       }
       case Object.keys(SORT_TYPES)[3]: {
-        return "Вовлечено";
+        return "Involved";
       }
       default: {
-        return "Лайков";
+        return "Likes";
       }
     }
   }, [sortType]);
@@ -179,7 +179,7 @@ export const Influencers = () => {
     <Box display="grid" gridTemplateColumns="auto">
       <Modal
         isVisibleDivider
-        titleProps={{ title: "Профиль инфлюенсера" }}
+        titleProps={{ title: "Influencer profile" }}
         dialogProps={{
           open: isInfluencerProfileVisible,
           onClose: onInfluencerProfileClose,

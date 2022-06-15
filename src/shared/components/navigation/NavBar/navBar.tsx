@@ -33,7 +33,7 @@ const NavBar: React.FC = () => {
             to={APP_URL.addCase}
             css={isSelected(APP_URL.addCase) && isSelectedCss}
           >
-            Добавить кейс
+            Add case
           </Link>
         </div>
         <div className="links-container__link-container">
@@ -43,7 +43,7 @@ const NavBar: React.FC = () => {
             to={APP_URL.savedCases}
             css={isSelected(APP_URL.savedCases) && isSelectedCss}
           >
-            Мои задания
+            Tasks
           </Link>
         </div>
       </div>

@@ -35,17 +35,17 @@ export const ActualCaseSidebar: React.FC<ActualCaseContentInput> = ({
         mt={3}
         mx={1}
       >
-        <Typography variant="subtitle5">Параметры сбора и анализа</Typography>
+        <Typography variant="subtitle5">Collection and Analysis Options</Typography>
         <Box display="flex" flexDirection="column" justifyContent="start">
-          <Typography variant="subtitle5">Период:&nbsp;</Typography>
+          <Typography variant="subtitle5">Period:&nbsp;</Typography>
           <Typography variant="body1" css={datePeriodCss}>
-            {dateFilter?.startDate?.setLocale("ru").toFormat("DD")}-
-            {dateFilter?.endDate?.setLocale("ru").toFormat("DD")}
+            {dateFilter?.startDate?.setLocale("eng").toFormat("DD")}-
+            {dateFilter?.endDate?.setLocale("eng").toFormat("DD")}
           </Typography>
         </Box>
         <Divider />
         <Box display="flex" flexDirection="column" justifyContent="start">
-          <Typography variant="subtitle5">Тэги:&nbsp;</Typography>
+          <Typography variant="subtitle5">Tags:&nbsp;</Typography>
           <Typography variant="body1" css={datePeriodCss}>
             <List sx={{ width: "100%", bgcolor: "background.paper" }}>
               {tags?.slice(0, MAX_TAGS_LENGTH_SHOW).map((value) => (
@@ -58,7 +58,7 @@ export const ActualCaseSidebar: React.FC<ActualCaseContentInput> = ({
         </Box>
         <Divider />
         <Box display="flex" flexDirection="column" justifyContent="start">
-          <Typography variant="subtitle5">Наложенные фильтры:&nbsp;</Typography>
+          <Typography variant="subtitle5">Used filters:&nbsp;</Typography>
           <Typography variant="body1" css={datePeriodCss}>
             <List
               sx={{
