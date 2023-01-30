@@ -219,6 +219,35 @@ const AddCase = () => {
     [chipsArray, database, enqueueSnackbar, setDatabase]
   );
 
+  const URL = "http://95.216.245.49:5081/";
+
+  const URL_getTweet = "http://95.216.245.49:5080/get_tweet";
+
+  let formData = new FormData();
+  formData.append("search_field", "text");
+  // formData.append("guruweba_example_submit", "Отправить");
+
+  // const onFetch = async () => {
+  //   console.log("fetching...");
+  //   const data = fetch(URL_getTweet, {
+  //     method: "GET",
+  //     // body: formData,
+  //     // body: JSON.stringify({
+  //     //   search_field: "text",
+  //     //   guruweba_example_submit: "Отправить",
+  //     // }),
+  //     // headers: {
+  //     //   "Content-Type": "application/x-www-form-urlencoded",
+  //     // },
+  //     // mode: "cors",
+  //     // headers: {
+  //     //   "Access-Control-Allow-Origin": "*",
+  //     // },
+  //   }).then((res) => console.log(res, " sup"));
+  //   // .then((res) => console.log(res))
+  //   // .catch(console.log);;
+  // };
+
   const onSubmit = React.useCallback(
     (formData: FormData) => {
       const newCase = {
@@ -469,6 +498,7 @@ const AddCase = () => {
               variant="contained"
               type="submit"
               loading={isSubmitting}
+              // onClick={onFetch}
             >
               Save & Run
             </Button>
