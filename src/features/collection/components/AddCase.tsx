@@ -2,7 +2,7 @@ import { Box, Chip, useTheme } from "@material-ui/core";
 import { Autocomplete, css } from "@mui/material";
 import { DateTime } from "luxon";
 import { observer } from "mobx-react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FormError } from "../../../shared/components/form";
 import { Icon24LogoVk } from "@vkontakte/icons";
 import CIcon from "@coreui/icons-react";
@@ -21,7 +21,6 @@ import {
   Tooltip,
   Typography,
 } from "../../../shared/components/ui";
-import { SocialIcon } from "react-social-icons";
 import { Form } from "../../../shared/components/ui/Form";
 import { SOCIAL_NETWORKS } from "../../../shared/constants/social";
 import { required } from "../../../shared/utils/form";
@@ -34,6 +33,7 @@ import {
 } from "shared/components/ui/SnackMessage";
 import { random } from "lodash";
 import { CASE_STATUSES } from "shared/constants/status";
+import { ParsedData, Tweet, User } from "providers/types";
 
 const socialIconCss = (color: string) => css`
   color: ${color};
@@ -98,8 +98,11 @@ const MINUTES_STEP = 30;
 
 const AddCase = () => {
   const theme: any = useTheme();
-  const { setDatabase, database } = useDatabaseContext();
+  const { setDatabase, database, parsedData, setParsedData } =
+    useDatabaseContext();
   const { enqueueSnackbar } = useSnackbar();
+
+  useEffect(() => console.log(parsedData, "pd"), [parsedData]);
 
   const datePickerStyle: React.CSSProperties = {
     color: theme.palette.primary.main,
@@ -219,41 +222,15 @@ const AddCase = () => {
     [chipsArray, database, enqueueSnackbar, setDatabase]
   );
 
-  const URL = "http://95.216.245.49:5081/";
-
-  const URL_getTweet = "http://95.216.245.49:5080/get_tweet";
-
-  let formData = new FormData();
-  formData.append("search_field", "text");
-  // formData.append("guruweba_example_submit", "Отправить");
-
-  // const onFetch = async () => {
-  //   console.log("fetching...");
-  //   const data = fetch(URL_getTweet, {
-  //     method: "GET",
-  //     // body: formData,
-  //     // body: JSON.stringify({
-  //     //   search_field: "text",
-  //     //   guruweba_example_submit: "Отправить",
-  //     // }),
-  //     // headers: {
-  //     //   "Content-Type": "application/x-www-form-urlencoded",
-  //     // },
-  //     // mode: "cors",
-  //     // headers: {
-  //     //   "Access-Control-Allow-Origin": "*",
-  //     // },
-  //   }).then((res) => console.log(res, " sup"));
-  //   // .then((res) => console.log(res))
-  //   // .catch(console.log);;
-  // };
+  const URL = "http://95.216.245.49:5081";
 
   const onSubmit = React.useCallback(
     (formData: FormData) => {
       const newCase = {
         id: generateAccessCode(),
         title: formData?.title,
-        status: CASE_STATUSES.crawling,
+        // status: CASE_STATUSES.crawling,
+        status: CASE_STATUSES.ready,
         progress: (random(10) * 10) / 100,
         dateFilter: {
           startDate: DateTime.now(),
@@ -263,12 +240,12 @@ const AddCase = () => {
           Object.keys(formData?.social ?? {}).map((label) => `${label}`) ?? [],
         tags: chipsArray,
         tweets: [
-          {
-            id: generateAccessCode(),
-            text: "good text",
-            author: "me",
-            date: DateTime.now(),
-          },
+          // {
+          //   id: generateAccessCode(),
+          //   text: "good text",
+          //   author: "me",
+          //   date: DateTime.now(),
+          // },
         ],
         tweetsCount: 33,
         generalStats: {
@@ -287,9 +264,46 @@ const AddCase = () => {
           content: createSnackMessage(SNACK_TYPES.error),
         }
       );
+
+      fetchAllPosts(chipsArray);
     },
     [chipsArray, database, enqueueSnackbar, setDatabase]
   );
+
+  const fetchAllPosts = (tags: string[]) => {
+    const arr: {
+      globalObjects: {
+        users: { [index: string]: User };
+        tweets: { [index: string]: Tweet };
+      };
+      timeline: any;
+    }[] = [];
+    tags.forEach(async (search_field) => {
+      const body = JSON.stringify({
+        search_field,
+      });
+
+      const result = await fetch(URL, {
+        method: "POST",
+        body,
+      }).then((d) => d.json().then((data) => data));
+      arr.push(result);
+      setParsedData({
+        timeline: {
+          id: arr.map((item) => item?.timeline?.id ?? ""),
+          instructions: [],
+        },
+        globalObjects: {
+          users: arr
+            .map((item) => Object.values(item?.globalObjects?.users))
+            .flat(),
+          tweets: arr
+            .map((item) => Object.values(item?.globalObjects?.tweets))
+            .flat(),
+        },
+      });
+    });
+  };
 
   return (
     <Form
@@ -498,7 +512,6 @@ const AddCase = () => {
               variant="contained"
               type="submit"
               loading={isSubmitting}
-              // onClick={onFetch}
             >
               Save & Run
             </Button>

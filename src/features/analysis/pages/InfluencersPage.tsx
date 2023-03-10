@@ -1,4 +1,5 @@
 import React from "react";
+import { SearchProvider } from "shared/features/search";
 import { SpreadsheetProvider } from "shared/features/spreadsheet";
 import { Influencers } from "../components/ActualCaseInfluencers/components/Influencers";
 
@@ -10,7 +11,9 @@ export const InfluencersPage = ({
   React.useEffect(() => setIsShowingCheckbox(false), [setIsShowingCheckbox]);
   return (
     <SpreadsheetProvider>
-      <Influencers />
+      <SearchProvider>
+        <Influencers />
+      </SearchProvider>
     </SpreadsheetProvider>
   );
 };

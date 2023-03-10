@@ -144,7 +144,7 @@ export const SpreadsheetToolbar: React.FC<SpreadsheetToolbarProps> = ({
                 </Box>
               )}
               <Box display="flex">
-                {toolbarOptions?.withSearch !== false && (
+                {toolbarOptions?.withSearch && (
                   <PopoverV2
                     triggerType="icon-button"
                     tripperProps={{ children: <Icon name="Search" /> }}

@@ -8,6 +8,8 @@ import {
   ListItemText,
 } from "@material-ui/core";
 import { ActualCaseContentInput } from "features/analysis/types";
+import { DateTime } from "luxon";
+import { useDatabaseContext } from "providers/useDatabaseContext";
 import { PaperLayout } from "shared/components/layouts/PaperLayout";
 import { Typography } from "shared/components/ui";
 
@@ -18,6 +20,12 @@ const datePeriodCss = (theme: any) => css`
 const MAX_TAGS_LENGTH_SHOW = 8;
 const MAX_FILTERS_LENGTH_SHOW = 5;
 
+const parseDate = (date?: string) =>
+  DateTime.fromJSDate(new Date(date ?? "")).toFormat("D");
+
+const parseDateToLuxon = (date?: string) =>
+  DateTime.fromJSDate(new Date(date ?? ""));
+
 export const ActualCaseSidebar: React.FC<ActualCaseContentInput> = ({
   dateFilter,
   tags,
@@ -26,6 +34,14 @@ export const ActualCaseSidebar: React.FC<ActualCaseContentInput> = ({
   onChangeFilter,
   isShowingCheckbox,
 }) => {
+  const { parsedData } = useDatabaseContext();
+
+  const { tweets } = parsedData?.globalObjects ?? {};
+  const allDates =
+    tweets?.map(({ created_at }) => parseDateToLuxon(created_at)) ?? [];
+
+  const max = DateTime.max(...allDates);
+  const min = DateTime.max(...allDates);
   return (
     <PaperLayout>
       <Box
@@ -35,12 +51,14 @@ export const ActualCaseSidebar: React.FC<ActualCaseContentInput> = ({
         mt={3}
         mx={1}
       >
-        <Typography variant="subtitle5">Collection and Analysis Options</Typography>
+        <Typography variant="subtitle5">
+          Collection and Analysis Options
+        </Typography>
         <Box display="flex" flexDirection="column" justifyContent="start">
           <Typography variant="subtitle5">Period:&nbsp;</Typography>
           <Typography variant="body1" css={datePeriodCss}>
-            {dateFilter?.startDate?.setLocale("eng").toFormat("DD")}-
-            {dateFilter?.endDate?.setLocale("eng").toFormat("DD")}
+            {min?.setLocale("eng")?.toFormat("DD")}-
+            {max?.setLocale("eng")?.toFormat("DD")}
           </Typography>
         </Box>
         <Divider />

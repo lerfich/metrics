@@ -17,8 +17,8 @@ export const InfluencersSpreadsheetHeadlines = (label: string) => [
 ];
 
 export const SORT_TYPES = {
-  likesCount: "By number of likes",
-  tweetsCount: "By number of posts",
-  reposts: "By number of reposts",
-  involved: "By number of involved users",
+  friends: "By number of friends",
+  favourites: "By number of favourites",
+  followers: "By number of followers",
+  // involved: "By number of involved users",
 };

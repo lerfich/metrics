@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { observer } from "mobx-react";
 
 import {
@@ -13,6 +13,7 @@ import { css, useTheme } from "@emotion/react";
 import { Typography } from "shared/components/ui";
 import { DatabaseType } from "providers/types";
 import { CASE_STATUSES } from "shared/constants/status";
+import { useSearchContext } from "shared/features/search";
 
 const titleCss = (theme: any) => css`
   color: ${theme.palette.primary.light};
@@ -32,6 +33,8 @@ const prevStatusCss = (theme: any) => css`
 
 const SavedCases = () => {
   const { data: tableData, loading } = useSavedCases();
+  const { searchQuery } = useSearchContext();
+  useEffect(() => console.log(searchQuery, "sq"), [searchQuery]);
   const theme: any = useTheme();
 
   const switchChip = React.useCallback(
@@ -192,6 +195,7 @@ const SavedCases = () => {
         toolbarOptions={{
           shouldRedirectToCase: true,
           withDownload: true,
+          withSearch: true,
           downloadHandler,
           rawData: tableData ?? [],
         }}

@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { DatabaseContext, DEFAULT_CONTEXT_VALUE } from "./DatabaseContext";
-import { DatabaseContextValue } from "./types";
+import { DatabaseContextValue, ParsedData } from "./types";
 
 export type DatabaseContextProps = {
   children: React.ReactNode;
@@ -10,6 +10,7 @@ export type DatabaseContextProps = {
   defaultNegativeSemanticWordsValue?: DatabaseContextValue["negativeSemanticWords"];
   defaultNeutralSemanticWordsValue?: DatabaseContextValue["neutralSemanticWords"];
   defaultTopicAnalysis?: DatabaseContextValue["topicAnalysis"];
+  defaultParsedData?: DatabaseContextValue["parsedData"];
 };
 
 export const DatabaseProvider = ({
@@ -20,6 +21,7 @@ export const DatabaseProvider = ({
   defaultNegativeSemanticWordsValue = DEFAULT_CONTEXT_VALUE.negativeSemanticWords,
   defaultNeutralSemanticWordsValue = DEFAULT_CONTEXT_VALUE.neutralSemanticWords,
   defaultTopicAnalysis = DEFAULT_CONTEXT_VALUE.topicAnalysis,
+  defaultParsedData = DEFAULT_CONTEXT_VALUE.parsedData,
 }: DatabaseContextProps) => {
   const [database, setDatabase] = React.useState(defaultDatabaseValue);
   const [influencers, setInfluencers] = React.useState(defaultInfluencersValue);
@@ -34,6 +36,9 @@ export const DatabaseProvider = ({
   );
   const [topicAnalysis, setTopicAnalysis] =
     React.useState(defaultTopicAnalysis);
+  const [parsedData, setParsedData] = useState<ParsedData | undefined>(
+    defaultParsedData
+  );
 
   return (
     <DatabaseContext.Provider
@@ -50,6 +55,8 @@ export const DatabaseProvider = ({
         setNeutralSemanticWords,
         topicAnalysis,
         setTopicAnalysis,
+        parsedData,
+        setParsedData,
       }}
     >
       {children}

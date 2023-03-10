@@ -1,4 +1,5 @@
 import React from "react";
+import { PARSED_DATA_DEFAULT } from "shared/constants/parsedData";
 
 import {
   DATABASE,
@@ -23,6 +24,8 @@ export const DEFAULT_CONTEXT_VALUE: DatabaseContextValue = {
   setNeutralSemanticWords: () => {},
   topicAnalysis: TOPICS_ANALYSIS_LIST,
   setTopicAnalysis: () => {},
+  parsedData: undefined,
+  setParsedData: () => {},
 };
 
 export const DatabaseContext = React.createContext<DatabaseContextValue>(

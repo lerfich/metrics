@@ -1,9 +1,10 @@
 import { css } from "@emotion/react";
 import { MenuItem, Box, Chip } from "@material-ui/core";
-import { InfluencerType } from "providers/types";
+import { InfluencerType, User } from "providers/types";
 import { useDatabaseContext } from "providers/useDatabaseContext";
 import React from "react";
 import { Modal, Select, Typography } from "shared/components/ui";
+import { useSearchContext } from "shared/features/search";
 import {
   downloadCsv,
   formatDataToCsv,
@@ -22,7 +23,9 @@ const sortTopCss = (theme: any) => css`
 `;
 
 export const Influencers = () => {
-  const { influencers } = useDatabaseContext();
+  const { searchQuery } = useSearchContext();
+  const { influencers, parsedData } = useDatabaseContext();
+  const { pageSize, page } = useSpreadsheetContext();
   const [sortType, setSortType] = React.useState(Object.keys(SORT_TYPES)[0]);
   const { currentRowId } = useSpreadsheetContext();
   const onChangeSort = React.useCallback(
@@ -31,22 +34,22 @@ export const Influencers = () => {
   );
 
   const switchCount = React.useCallback(
-    (likes: number, tweets: number, reposts: number, involved: number) => {
+    (friends: number, favourites: number, followers: number) => {
       switch (sortType) {
         case Object.keys(SORT_TYPES)[0]: {
-          return likes.toString();
+          return friends.toString();
         }
         case Object.keys(SORT_TYPES)[1]: {
-          return tweets.toString();
+          return favourites.toString();
         }
         case Object.keys(SORT_TYPES)[2]: {
-          return reposts.toString();
+          return followers.toString();
         }
-        case Object.keys(SORT_TYPES)[3]: {
-          return involved.toString();
-        }
+        // case Object.keys(SORT_TYPES)[3]: {
+        //   return involved.toString();
+        // }
         default: {
-          return likes.toString();
+          return friends.toString();
         }
       }
     },
@@ -56,99 +59,111 @@ export const Influencers = () => {
   const switchCountType = React.useMemo(() => {
     switch (sortType) {
       case Object.keys(SORT_TYPES)[0]: {
-        return "Likes";
+        return "Friends";
       }
       case Object.keys(SORT_TYPES)[1]: {
-        return "Posts";
+        return "Favourites";
       }
       case Object.keys(SORT_TYPES)[2]: {
-        return "Reposts";
+        return "Followers";
       }
-      case Object.keys(SORT_TYPES)[3]: {
-        return "Involved";
-      }
+      // case Object.keys(SORT_TYPES)[3]: {
+      //   return "Involved";
+      // }
       default: {
-        return "Likes";
+        return "Friends";
       }
     }
   }, [sortType]);
 
   const compareInfluencers = React.useCallback(
-    (a: InfluencerType, b: InfluencerType) => {
+    (a: User, b: User) => {
       switch (sortType) {
         case Object.keys(SORT_TYPES)[0]: {
-          return b.likesCount - a.likesCount;
+          return b.friends_count - a.friends_count;
         }
         case Object.keys(SORT_TYPES)[1]: {
-          return b.tweetsCount - a.tweetsCount;
+          return b.favourites_count - a.favourites_count;
         }
         case Object.keys(SORT_TYPES)[2]: {
-          return b.repostsCount - a.repostsCount;
+          return b.followers_count - a.followers_count;
         }
-        case Object.keys(SORT_TYPES)[3]: {
-          return b.involved - a.involved;
-        }
+        // case Object.keys(SORT_TYPES)[3]: {
+        //   return b.involved - a.involved;
+        // }
         default: {
-          return b.likesCount - a.likesCount;
+          return b.friends_count - a.friends_count;
         }
       }
     },
     [sortType]
   );
 
+  const { tweets: parsedTweets, users: parsedUsers } =
+    parsedData?.globalObjects ?? {};
+
   const foundInfluencers = React.useMemo(
     () =>
-      influencers
+      parsedUsers
         ?.sort(compareInfluencers)
         .map(
           ({
-            userId,
-            user,
-            likesCount,
-            tweetsCount,
-            repostsCount,
-            involved,
+            id_str,
+            name,
+            friends_count,
+            favourites_count,
+            followers_count,
           }) => ({
-            id: userId.toString() || "",
-            userId: userId.toString() || "ID не найдено",
-            user: user || "Имя пользователя не найдено",
+            id: id_str || "",
+            userId: id_str || "ID не найдено",
+            user: name || "Имя пользователя не найдено",
             count: (
               <Chip
                 label={switchCount(
-                  likesCount,
-                  tweetsCount,
-                  repostsCount,
-                  involved
+                  friends_count,
+                  favourites_count,
+                  followers_count
                 )}
                 color="primary"
               />
             ),
           })
         ) ?? [],
-    [compareInfluencers, influencers, switchCount]
+    [compareInfluencers, parsedUsers, switchCount]
   );
 
+  const startPageSlice = (page - 1) * pageSize;
+  const endPageSlice = page * pageSize;
+
+  const searchedInfluencers = !searchQuery.length
+    ? foundInfluencers.slice(startPageSlice, endPageSlice)
+    : foundInfluencers
+        ?.filter(({ user }) => user.includes(searchQuery))
+        .slice(startPageSlice, endPageSlice);
+
+  const searchedInfluencersCounts = !searchQuery.length
+    ? foundInfluencers.length
+    : foundInfluencers?.filter(({ user }) => user.includes(searchQuery)).length;
+
   const downloadHandler = React.useCallback(
-    (toolbarData: InfluencerType[]) => {
+    (toolbarData: User[]) => {
       downloadCsv(
         formatDataToCsv({
           type: "object-array",
           data: toolbarData.map(
             ({
-              userId,
-              user,
-              likesCount,
-              tweetsCount,
-              repostsCount,
-              involved,
-            }: InfluencerType) => ({
-              userId: userId.toString() || "ID не найдено",
-              user: user || "Имя пользователя не найдено",
+              id_str,
+              name,
+              friends_count,
+              favourites_count,
+              followers_count,
+            }: User) => ({
+              userId: id_str || "ID не найдено",
+              user: name || "Имя пользователя не найдено",
               count: switchCount(
-                likesCount,
-                tweetsCount,
-                repostsCount,
-                involved
+                friends_count,
+                favourites_count,
+                followers_count
               ),
             })
           ),
@@ -216,16 +231,19 @@ export const Influencers = () => {
         </Box>
       </Box>
       <Spreadsheet
-        data={foundInfluencers}
+        data={searchedInfluencers}
         headlines={InfluencersSpreadsheetHeadlines(switchCountType)}
         toolbarOptions={{
           withDownload: true,
+          withSearch: true,
+          showTotalCount: true,
+          withPerPage: true,
           downloadHandler,
-          rawData: influencers?.sort(compareInfluencers) ?? [],
+          rawData: parsedUsers?.sort(compareInfluencers) ?? [],
           shouldOpenModal: onInfluencerProfileOpen,
         }}
         cellActions={[]}
-        itemsCount={influencers?.length ?? 0}
+        itemsCount={searchedInfluencersCounts}
         loading={false}
       />
     </Box>
